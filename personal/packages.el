@@ -53,19 +53,6 @@
 ;; (defvar file-name "~/.emacs.d/personal/mysql.el")
 ;; (load-file file-name)
 ;; (require 'mysql)
-
  
-;; jedi - python auto complete
-;; (prelude-require-package 'python-environment)
-;; (prelude-require-package 'jedi)
-;; (add-hook 'python-mode-hook 'jedi:setup)
-;; (setq jedi:complete-on-dot t)
-
-;; (require 'perspective)
-
-
-;; learn lisp
-;; (file-name-directory load-file-name)
-;; (message "this is print")
 
 
