@@ -1,10 +1,25 @@
+;;; Code:
+
+
+;; add a dir to load path
+(add-to-list 'load-path "~/.emacs.d/personal/")
+
+
+;; load prelude modules
+(load-file (expand-file-name "prelude-modules.el" prelude-personal-dir))
+
+
 ;; load custom packages
-(defvar prelude-personal-packages (expand-file-name "packages.el" prelude-personal-dir)
-  "This file contains a list of personal packages.")
-(load-file prelude-personal-packages)
+(load-file (expand-file-name "packages.el" prelude-personal-dir))
 
 
 ;; load custom config
-(defvar prelude-personal-config (expand-file-name "config.el" prelude-personal-dir)
-  "This file contains a list of personal config.")
-(load-file prelude-personal-config)
+(load-file (expand-file-name "config.el" prelude-personal-dir))
+
+
+;; load custom key bindings
+(load-file (expand-file-name "kbd.el" prelude-personal-dir))
+
+
+(provide 'init)
+;;; init.el ends here

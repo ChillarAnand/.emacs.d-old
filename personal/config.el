@@ -10,14 +10,6 @@
 (setq yow-file "~/.emacs.d/yow.txt.gz")
 
 
-;; enable electric-pair-mode
-(electric-pair-mode 1)
-
-
-;; add a dir to load path
-(add-to-list 'load-path "~/.emacs.d/personal/")
-
-
 ;; ctags
 (setq path-to-ctags "/usr/big/ctags-exuberant")
 
@@ -26,5 +18,3 @@
 ;; (defun hello () (insert "Hello, I am switched project"))
 ;; (defun ve () (pyvenv-activate "/home/k3/.virtualenvs/pearl"))
 ;; (add-hook 'projectile-switch-project-hook 've)
-
-
