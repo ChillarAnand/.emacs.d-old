@@ -20,3 +20,11 @@
 
 ;; ctags
 (setq path-to-ctags "/usr/big/ctags-exuberant")
+
+
+;; test
+;; (defun hello () (insert "Hello, I am switched project"))
+;; (defun ve () (pyvenv-activate "/home/k3/.virtualenvs/pearl"))
+;; (add-hook 'projectile-switch-project-hook 've)
+
+

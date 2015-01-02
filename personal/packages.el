@@ -26,6 +26,7 @@
 (package-initialize)
 (elpy-enable)
 (elpy-use-ipython)
+(defalias 'workon 'pyvenv-workon)
 
 
 ;; real-auto-save
@@ -33,7 +34,7 @@
 (add-hook 'text-mode-hook 'turn-on-real-auto-save)
 (add-hook 'muse-mode-hook 'turn-on-real-auto-save)
 
-(setq real-auto-save-interval 5) ;; in seconds
+;; (setq real-auto-save-interval 5) ;; in seconds
 
 
 ;; org reveal
@@ -48,4 +49,3 @@
 ;; (defvar file-name "~/.emacs.d/personal/mysql.el")
 ;; (load-file file-name)
 ;; (require 'mysql)
-
