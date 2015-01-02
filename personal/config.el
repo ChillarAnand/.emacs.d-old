@@ -14,3 +14,9 @@
 (electric-pair-mode 1)
 
 
+;; add a dir to load path
+(add-to-list 'load-path "~/.emacs.d/personal/")
+
+
+;; ctags
+(setq path-to-ctags "/usr/big/ctags-exuberant")

@@ -1,6 +1,11 @@
 ;; multiple cursors
 (prelude-require-package 'multiple-cursors)
 
+(global-set-key (kbd "C-c m e") 'mc/edit-lines)
+(global-set-key (kbd "C-c m n") 'mc/mark-next-like-this)
+(global-set-key (kbd "C-c m p") 'mc/mark-previous-like-this)
+(global-set-key (kbd "C-c m a") 'mc/mark-all-like-this)
+
 
 ;; pony mode for django projects
 (prelude-require-package 'pony-mode)
@@ -9,9 +14,9 @@
 ;; start smex when minibuffer is started
 (prelude-require-package 'smex)
 
-
-;; add a dir to load path
-(add-to-list 'load-path "~/.emacs.d/personal/")
+;; (global-set-key (kbd "M-x") 'smex)
+;; (global-set-key (kbd "M-X") 'smex-major-mode-commands)
+;; (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
 
 
 ;; elpy
@@ -20,6 +25,7 @@
              '("elpy" . "http://jorgenschaefer.github.io/packages/"))
 (package-initialize)
 (elpy-enable)
+(elpy-use-ipython)
 
 
 ;; real-auto-save
@@ -30,17 +36,6 @@
 (setq real-auto-save-interval 5) ;; in seconds
 
 
-;; ctags
-(setq path-to-ctags "/usr/big/ctags-exuberant")
-
-;; (defun create-tags (dir-name)
-;;   "Create tags file."
-;;   (interactive "DDirectory: ")
-;;   (shell-command
-;;    (format "ctags -f %s -e -R %s" path-to-ctags (directory-file-name dir-name)))
-;;   )
-
- 
 ;; org reveal
 ;; (load-file "~/.emacs.d/personal/prelude-personal-dir/ox-reveal.el")
 ;; (load-file "~/.emacs.d/personal/prelude-personal-dir/htmlize.el")
@@ -53,6 +48,4 @@
 ;; (defvar file-name "~/.emacs.d/personal/mysql.el")
 ;; (load-file file-name)
 ;; (require 'mysql)
- 
-
 
