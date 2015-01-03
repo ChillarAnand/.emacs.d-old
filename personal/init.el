@@ -1,3 +1,9 @@
+;;; init.el --- Prelude's personal configuration entry point.
+
+;;; Commentary:
+
+;; This file has personal config for prelude emacs
+
 ;;; Code:
 
 
@@ -5,20 +11,15 @@
 (add-to-list 'load-path "~/.emacs.d/personal/")
 
 
-;; load prelude modules
-(load-file (expand-file-name "prelude-modules.el" prelude-personal-dir))
+;; check for files & load them
+(defun load-file-if-exists (list)
+  "Check for file & load it."
+  (let (value)
+    (dolist (element list value)
+      (if (file-exists-p element)
+          (load-file (expand-file-name element prelude-personal-dir))))))
 
-
-;; load custom packages
-(load-file (expand-file-name "packages.el" prelude-personal-dir))
-
-
-;; load custom config
-(load-file (expand-file-name "config.el" prelude-personal-dir))
-
-
-;; load custom key bindings
-(load-file (expand-file-name "kbd.el" prelude-personal-dir))
+(load-file-if-exists '("config.el" "kbd.el" "packages.el" "prelude-modules.el"))
 
 
 (provide 'init)
