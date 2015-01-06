@@ -1,3 +1,10 @@
+;;; code:
+
+
+;; load downloaded packages
+(add-to-list 'load-path "~/.emacs.d/personal/packages/")
+
+
 ;; multiple cursors
 (prelude-require-package 'multiple-cursors)
 
@@ -48,6 +55,21 @@
 (add-hook 'python-mode-hook           #'enable-paredit-mode)
 
 
+;; smart tab
+(require 'smart-tab)
+(global-smart-tab-mode 1)
+
+(add-to-list 'hippie-expand-try-functions-list
+             'yas/hippie-try-expand) ;put yasnippet in hippie-expansion list
+
+(setq smart-tab-using-hippie-expand t)
+(global-smart-tab-mode t)
+
+
+;; sos
+(require 'sos)
+
+
 ;; org reveal
 ;; (load-file "~/.emacs.d/personal/prelude-personal-dir/ox-reveal.el")
 ;; (load-file "~/.emacs.d/personal/prelude-personal-dir/htmlize.el")
@@ -57,6 +79,4 @@
 
 
 ;; mysql for emacs
-;; (defvar file-name "~/.emacs.d/personal/mysql.el")
-;; (load-file file-name)
-;; (require 'mysql)
+(require 'mysql)

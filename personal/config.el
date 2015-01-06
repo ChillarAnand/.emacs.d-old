@@ -1,3 +1,5 @@
+;;; config - personal config for prelude emacs
+
 ;; unzip zipped file dired
 (eval-after-load "dired-aux"
   '(add-to-list 'dired-compress-file-suffixes
@@ -12,9 +14,3 @@
 
 ;; ctags
 (setq path-to-ctags "/usr/big/ctags-exuberant")
-
-
-;; test
-;; (defun hello () (insert "Hello, I am switched project"))
-;; (defun ve () (pyvenv-activate "/home/k3/.virtualenvs/pearl"))
-;; (add-hook 'projectile-switch-project-hook 've)

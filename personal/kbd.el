@@ -25,3 +25,14 @@
 (key-chord-define-global "pp" 'helm-projectile-switch-project)
 (key-chord-define-global "pf" 'helm-projectile-find-file)
 (key-chord-define-global "bb" 'prelude-switch-to-previous-buffer)
+(key-chord-define-global "mx" 'helm-M-x)
+(key-chord-define-global "mg" 'magit-status)
+(key-chord-define-global "jb" 'pop-global-mark)
+(key-chord-define-global "mm" 'set-mark-command)
+(key-chord-define-global "kk" 'kill-this-buffer)
+(key-chord-define-global "ow" 'other-window)
+
+
+(key-chord-define-global "fj" 'helm-M-x)
+
+;;; kbd.el ends here
