@@ -31,6 +31,7 @@
 (key-chord-define-global "mm" 'set-mark-command)
 (key-chord-define-global "kk" 'kill-this-buffer)
 (key-chord-define-global "ow" 'other-window)
+(key-chord-define-global "hf" 'helm-recentf)
 
 
 (key-chord-define-global "fj" 'helm-M-x)
