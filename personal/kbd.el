@@ -32,6 +32,8 @@
 (key-chord-define-global "kk" 'kill-this-buffer)
 (key-chord-define-global "ow" 'other-window)
 (key-chord-define-global "hf" 'helm-recentf)
+(key-chord-define-global "gg" 'beginning-of-buffer)
+(key-chord-define-global "GG" 'end-of-buffer)
 
 
 (key-chord-define-global "fj" 'helm-M-x)
