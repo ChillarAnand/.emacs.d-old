@@ -12,8 +12,9 @@
 (setq yow-file "~/.emacs.d/yow.txt.gz")
 
 
-;; turn off smart parens
-(advice-add #'smartparens-mode :before-until (lambda (&rest args) t))
+
+
+
 
 
 ;; ctags

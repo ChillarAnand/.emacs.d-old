@@ -27,13 +27,19 @@
 
 
 ;; elpy
-(require 'package)
-(add-to-list 'package-archives
-             '("elpy" . "http://jorgenschaefer.github.io/packages/"))
-(package-initialize)
+(when (not (require 'elpy nil 'noerror))
+  (require 'package)
+  (add-to-list 'package-archives
+               '("elpy" . "http://jorgenschaefer.github.io/packages/"))
+  (package-initialize)
+  (package-refresh-contents)
+  (package-install 'elpy))
+
 (elpy-enable)
 (elpy-use-ipython)
 (defalias 'workon 'pyvenv-workon)
+
+
 
 
 ;; real-auto-save
@@ -54,6 +60,8 @@
 (add-hook 'scheme-mode-hook           #'enable-paredit-mode)
 (add-hook 'python-mode-hook           #'enable-paredit-mode)
 
+;; turn off smart parens
+(advice-add #'smartparens-mode :before-until (lambda (&rest args) t))
 
 ;; smart tab
 (require 'smart-tab)
@@ -68,6 +76,26 @@
 
 ;; sos
 (require 'sos)
+
+
+;; sx.el
+;;(add-to-list 'load-path "~/.emacs.d/personal/packages/sx.el/")
+;; (require 'sx-load)
+
+
+;; edit server
+  (when (require 'edit-server nil t)
+    (setq edit-server-new-frame nil)
+    (edit-server-start))
+
+
+;; discover-my-major
+(if (not (package-installed-p 'discover-my-major))
+    (progn
+      (package-refresh-contents)
+      (package-install 'discover-my-major)))
+
+(require 'discover-my-major)
 
 
 ;; org reveal
