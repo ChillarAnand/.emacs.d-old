@@ -6,7 +6,7 @@
 
 (global-set-key (kbd "C-h C-m") 'discover-my-major)
 
-(global-set-key (kbd "C-c C-f") 'helm-recentf)
+;;(global-set-key (kbd "C-c C-f") 'helm-recentf)
 
 (global-set-key "\C-c\C-k" "\C-a\C- \C-n\M-w")
 
