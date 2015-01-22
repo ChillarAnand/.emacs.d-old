@@ -434,6 +434,16 @@ Paredit behaves badly if parentheses are unbalanced, so exercise
                 ("(foo (bar baz |quux) zot)"
                  "(foo bar (baz |quux) zot)"))
 
+   (("C-%" "C-M-<right>" "ESC C-<right>")
+    paredit-backward-barf-sexp
+    ("(foo (bar baz |quux) zot)"
+     "(foo bar (baz |quux) zot)"))
+   (("C-%" "C-<left>")
+    paredit-forward-barf-sexp
+    ("(foo (bar |baz quux) zot)"
+     "(foo (bar |baz) quux zot)"))
+
+
    "Miscellaneous Commands"
    ("M-S"       paredit-split-sexp
                 ("(hello| world)"
@@ -637,6 +647,7 @@ Used by `paredit-yank-pop'; for internal paredit use only.")
 (define-paredit-pair ?\[ ?\] "square")
 (define-paredit-pair ?\{ ?\} "curly")
 (define-paredit-pair ?\< ?\> "angled")
+(define-paredit-pair ?\% ?\% "percentage")
 
 ;;; Aliases for the old names.
 
@@ -787,7 +798,7 @@ Each predicate should examine only text before the point, if ENDP is
   ;; close the string), do insert a space.
   (and (not (if endp (eobp) (bobp)))
        (memq (char-syntax (if endp (char-after) (char-before)))
-             (list ?w ?_ ?\"
+             (list ?\"
                    (let ((matching (matching-paren delimiter)))
                      (and matching (char-syntax matching)))
                    (and (not endp)

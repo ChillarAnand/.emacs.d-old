@@ -1,8 +1,28 @@
 ;;; code:
 
-
 ;; load downloaded packages
 (add-to-list 'load-path "~/.emacs.d/personal/packages/")
+
+
+;; personal packages
+(require 'personal-paredit)
+;; (require 'personal-web-mode)
+(require 'sos)  ; search on stackoverflow
+
+;; (load-file "~/.emacs.d/personal/packages/nxhtml/autostart.el")
+;;(load-file "~/.emacs.d/personal/packages/python-django.el")
+;;(require 'python-django)
+
+
+;; visible mark
+(prelude-require-package 'visible-mark)
+(require 'visible-mark)
+(global-visible-mark-mode 1)
+
+
+;; swoop
+(prelude-require-package 'helm-swoop)
+(require 'helm-swoop)
 
 
 ;; multiple cursors
@@ -12,18 +32,6 @@
 (global-set-key (kbd "C-c m n") 'mc/mark-next-like-this)
 (global-set-key (kbd "C-c m p") 'mc/mark-previous-like-this)
 (global-set-key (kbd "C-c m a") 'mc/mark-all-like-this)
-
-
-;; pony mode for django projects
-(prelude-require-package 'pony-mode)
-
-
-;; start smex when minibuffer is started
-(prelude-require-package 'smex)
-
-;; (global-set-key (kbd "M-x") 'smex)
-;; (global-set-key (kbd "M-X") 'smex-major-mode-commands)
-;; (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
 
 
 ;; elpy
@@ -40,42 +48,23 @@
 (defalias 'workon 'pyvenv-workon)
 
 
+;; pony mode for django projects
+;; (prelude-require-package 'pony-mode)
+;; (require 'pony-mode)
+;; (add-hook 'python-mode-hook 'pony-mode)
+(add-to-list 'load-path "~/.emacs.d/personal/packages/pony-mode/src/")
+(require 'pony-mode)
 
 
 ;; real-auto-save
 (require 'real-auto-save)
 (add-hook 'text-mode-hook 'turn-on-real-auto-save)
 (add-hook 'muse-mode-hook 'turn-on-real-auto-save)
-
 ;; (setq real-auto-save-interval 5) ;; in seconds
 
 
-;; activate paredit
-(autoload 'enable-paredit-mode "paredit" "Turn on pseudo-structural editing of Lisp code." t)
-(add-hook 'emacs-lisp-mode-hook       #'enable-paredit-mode)
-(add-hook 'eval-expression-minibuffer-setup-hook #'enable-paredit-mode)
-(add-hook 'ielm-mode-hook             #'enable-paredit-mode)
-(add-hook 'lisp-mode-hook             #'enable-paredit-mode)
-(add-hook 'lisp-interaction-mode-hook #'enable-paredit-mode)
-(add-hook 'scheme-mode-hook           #'enable-paredit-mode)
-(add-hook 'python-mode-hook           #'enable-paredit-mode)
-
-;; turn off smart parens
-(advice-add #'smartparens-mode :before-until (lambda (&rest args) t))
-
-;; smart tab
-(require 'smart-tab)
-(global-smart-tab-mode 1)
-
-(add-to-list 'hippie-expand-try-functions-list
-             'yas/hippie-try-expand) ;put yasnippet in hippie-expansion list
-
-(setq smart-tab-using-hippie-expand t)
-(global-smart-tab-mode t)
 
 
-;; sos
-(require 'sos)
 
 
 ;; sx.el
@@ -108,3 +97,39 @@
 
 ;; mysql for emacs
 (require 'mysql)
+
+
+;; company
+(prelude-require-packages '(company))
+(require 'company)
+
+(setq company-idle-delay 0.5)
+(setq company-tooltip-limit 10)
+(setq company-minimum-prefix-length 1)
+(setq company-tooltip-flip-when-above t)
+(global-company-mode 1)
+
+
+;; smart tab
+(require 'smart-tab)
+(global-smart-tab-mode 1)
+
+(require 'yasnippet)
+(add-to-list 'hippie-expand-try-functions-list
+             'yas/hippie-try-expand) ;put yasnippet in hippie-expansion list
+
+(setq smart-tab-using-hippie-expand t)
+(global-smart-tab-mode t)
+
+;; (define-key company-active-map "\t" 'company-yasnippet-or-completion)
+
+;; (defun company-yasnippet-or-completion ()
+;;   (interactive)
+;;   (if (yas/expansion-at-point)
+;;       (progn (company-abort)
+;;              (yas/expand))
+;;     (company-complete-common)))
+
+;; (defun yas/expansion-at-point ()
+;;   "Tested with v0.6.1. Extracted from `yas/expand-1'"
+;;   (first (yas/current-key)))
