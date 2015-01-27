@@ -5,6 +5,7 @@
 
 (key-chord-define-global "gg" 'beginning-of-buffer)
 (key-chord-define-global "GG" 'end-of-buffer)
+(key-chord-define-global "ff" 'helm-projectile-find-file)
 
 (key-chord-define-global "sp" 'helm-projectile-switch-project)
 (key-chord-define-global "pf" 'helm-projectile-find-file)
@@ -49,7 +50,7 @@
 (defvar key-chord-tips
   '("pt prelude-tip-of-the-day"
     "kt key-chord-tips"
-
+    "ff helm-projectile-find-file"
     "gg beginning-of-buffer"
     "GG end-of-buffer"
 

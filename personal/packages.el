@@ -52,8 +52,8 @@
 ;; (prelude-require-package 'pony-mode)
 ;; (require 'pony-mode)
 ;; (add-hook 'python-mode-hook 'pony-mode)
-(add-to-list 'load-path "~/.emacs.d/personal/packages/pony-mode/src/")
-(require 'pony-mode)
+;; (add-to-list 'load-path "~/.emacs.d/personal/packages/pony-mode/src/")
+;; (require 'pony-mode)
 
 
 ;; real-auto-save
@@ -61,10 +61,6 @@
 (add-hook 'text-mode-hook 'turn-on-real-auto-save)
 (add-hook 'muse-mode-hook 'turn-on-real-auto-save)
 ;; (setq real-auto-save-interval 5) ;; in seconds
-
-
-
-
 
 
 ;; sx.el
@@ -108,6 +104,15 @@
 (setq company-minimum-prefix-length 1)
 (setq company-tooltip-flip-when-above t)
 (global-company-mode 1)
+
+
+;; dired history
+(require 'savehist)
+(add-to-list 'savehist-additional-variables 'helm-dired-history-variable)
+(savehist-mode 1)
+(eval-after-load 'dired
+  '(progn (require 'helm-dired-history)
+          (define-key dired-mode-map "," 'helm-dired-history-view)))
 
 
 ;; smart tab
