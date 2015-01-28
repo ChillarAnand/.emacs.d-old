@@ -8,9 +8,9 @@
 
 
 ;; yow - easter egg
-(unless (file-exists-p "~/.emacs.d/personal/yow.txt.gz")
-  (shell-command "wget bit.ly/emacs-yow -O ~/.emacs.d/personal/yow.txt.gz"))
-(setq yow-file "~/.emacs.d/yow.txt.gz")
+;; (unless (file-exists-p "~/.emacs.d/personal/yow.txt.gz")
+;;   (shell-command "wget bit.ly/emacs-yow -O ~/.emacs.d/personal/yow.txt.gz"))
+;; (setq yow-file "~/.emacs.d/yow.txt.gz")
 
 
 ;; copy line
@@ -36,10 +36,9 @@
   (if (and arg (not (= 1 arg))) (message "%d lines copied" arg)))
 
 
-
 (require 'key-chord)
 (key-chord-define-global "yy" 'copy-line)
-(key-chord-define-global "md" 'ido-dired)
+
 
 ;; sql
 

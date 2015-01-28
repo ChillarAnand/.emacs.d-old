@@ -1,4 +1,7 @@
 ;;; key chord
+
+;;; Code:
+
 (prelude-require-package 'key-chord)
 
 (require 'key-chord)
@@ -7,7 +10,7 @@
 (key-chord-define-global "GG" 'end-of-buffer)
 (key-chord-define-global "ff" 'helm-projectile-find-file)
 
-(key-chord-define-global "sp" 'helm-projectile-switch-project)
+(key-chord-define-global "ps" 'helm-projectile-switch-project)
 (key-chord-define-global "pf" 'helm-projectile-find-file)
 (key-chord-define-global "pg" 'helm-projectile-grep)
 
@@ -34,6 +37,7 @@
 (key-chord-define-global "df" 'describe-function)
 (key-chord-define-global "hk" 'describe-key)
 (key-chord-define-global "hv" 'describe-variable)
+(key-chord-define-global "hf" 'describe-function)
 
 (key-chord-define-global "pt" 'prelude-tip-of-the-day)
 
@@ -44,12 +48,13 @@
 (key-chord-define-global "uu" 'undo-tree-visualize)
 (key-chord-define-global "xx" 'execute-extended-command)
 (key-chord-define-global "dd" 'prelude-kill-whole-line)
-
+(key-chord-define-global "md" 'ido-dired)
 
 
 (defvar key-chord-tips
   '("pt prelude-tip-of-the-day"
     "kt key-chord-tips"
+
     "ff helm-projectile-find-file"
     "gg beginning-of-buffer"
     "GG end-of-buffer"
@@ -87,8 +92,7 @@
     "jk ace-jump-char-mode"
     "JJ prelude-switch-to-previous-buffer"
     "uu undo-tree-visualize"
-    "xx execute-extended-command"
-    ))
+    "xx execute-extended-command"))
 
 (defun key-chord-tip-of-the-day ()
   "Display a random entry from `key-chord-tips'."
@@ -97,15 +101,16 @@
     ;; pick a new random seed
     (random t)
     (message
-     (concat "key chord: " (nth (random (length key-chord-tips)) key-chord-tips)))))
+     (concat "key chord: "
+             (nth (random (length key-chord-tips)) key-chord-tips)))))
 
 (key-chord-define-global "kt" 'key-chord-tip-of-the-day)
-
 
 (setq prelude-tips (append prelude-tips key-chord-tips))
 
 (key-chord-mode +1)
 
+
 (provide 'prelude-key-chord)
 
-;;; kc.el ends here
+;;; personal-key-chord.el ends here
