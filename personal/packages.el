@@ -2,7 +2,7 @@
 
 
 (prelude-require-packages '(use-package paredit helm-swoop multiple-cursors
-                             delight real-auto-save company))
+                             delight real-auto-save company header2))
 
 (require 'use-package)
 
@@ -66,6 +66,13 @@
     (setq company-minimum-prefix-length 1)
     (setq company-tooltip-flip-when-above t)
     (global-company-mode 1)))
+
+
+(use-package header2
+  :init
+  (progn
+    (add-hook 'emacs-lisp-mode-hook 'auto-make-header)))
+
 
 (provide 'packages)
 ;;; packages.el ends here
