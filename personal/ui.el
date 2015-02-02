@@ -1,3 +1,5 @@
+;;; Code:
+
 ;; disable zenburn
 (disable-theme 'zenburn)
 
@@ -15,3 +17,7 @@
 
 ;; remove scroll bar
 (scroll-bar-mode -1)
+
+
+(provide 'ui)
+;;; ui.el ends here

@@ -1,6 +1,20 @@
-;;; key chord
+;; key bindings
 
 ;;; Code:
+
+
+(global-set-key (kbd "C-c C-v") 'eval-buffer)
+(global-set-key (kbd "C-h C-m") 'discover-my-major)
+
+(global-set-key (kbd "C-?") 'help-command)
+(global-set-key (kbd "M-?") 'mark-paragraph)
+
+;;(global-set-key (kbd "C-h") 'paredit-backward-delete)
+
+(global-set-key (kbd "M-h") 'backward-kill-word)
+
+
+;;; key chord
 
 (prelude-require-package 'key-chord)
 
@@ -16,7 +30,7 @@
 
 (key-chord-define-global "mx" 'helm-M-x)
 (key-chord-define-global "jf" 'helm-mini)
-(key-chord-define-global "jd" 'helm-semantic-or-imenu)
+(key-chord-define-global "js" 'helm-semantic-or-imenu)
 (key-chord-define-global "hr" 'helm-resume)
 (key-chord-define-global "mr" 'helm-all-mark-rings)
 
@@ -65,7 +79,7 @@
 
     "mx helm-M-x"
     "jf helm-mini"
-    "jd helm-semantic-or-imenu"
+    "js helm-semantic-or-imenu"
     "hr helm-resume"
     "mr helm-all-mark-rings"
 
@@ -110,7 +124,5 @@
 
 (key-chord-mode +1)
 
-
-(provide 'prelude-key-chord)
-
-;;; personal-key-chord.el ends here
+(provide 'key-bindings)
+;;; kbd.el ends here

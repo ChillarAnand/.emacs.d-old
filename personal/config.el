@@ -1,16 +1,11 @@
 ;;; config - personal config for prelude emacs
 
+;;; Code:
 
 ;; unzip zipped file dired
 (eval-after-load "dired-aux"
   '(add-to-list 'dired-compress-file-suffixes
                 '("\\.zip\\'" ".zip" "unzip")))
-
-
-;; yow - easter egg
-;; (unless (file-exists-p "~/.emacs.d/personal/yow.txt.gz")
-;;   (shell-command "wget bit.ly/emacs-yow -O ~/.emacs.d/personal/yow.txt.gz"))
-;; (setq yow-file "~/.emacs.d/yow.txt.gz")
 
 
 ;; copy line
@@ -48,10 +43,6 @@
           (lambda ()
             (toggle-truncate-lines t)))
 
-;; company
-(setq company-idle-delay 0.1)
-(setq company-minimum-prefix-length 1)
-
 ;; supress mumamo buffer file warnings
 (when (and (equal emacs-major-version 24)
            (equal emacs-minor-version 2))
@@ -59,10 +50,79 @@
     '(setq mumamo-per-buffer-local-vars
            (delq 'buffer-file-name mumamo-per-buffer-local-vars))))
 
+(semantic-mode 1)
 
 
-;; ctags
-;; (setq path-to-ctags "/usr/big/ctags-exuberant")
+;; python mode settings
+(global-set-key (kbd "M-,") 'pop-tag-mark)
 
 
+(add-to-list 'load-path "~/.emacs.d/personal/packages/elpy")
+(require 'elpy)
+(elpy-enable)
+(elpy-use-ipython)
+(defalias 'workon 'pyvenv-workon)
+
+
+;; load downloaded packages
+(add-to-list 'load-path "~/.emacs.d/personal/packages/")
+
+
+;; edit server
+  (when (require 'edit-server nil t)
+    (setq edit-server-new-frame nil)
+    (edit-server-start))
+
+
+;; discover-my-major
+(if (not (package-installed-p 'discover-my-major))
+    (progn
+      (package-refresh-contents)
+      (package-install 'discover-my-major)))
+
+(require 'discover-my-major)
+
+
+;; org reveal
+;; (load-file "~/.emacs.d/personal/prelude-personal-dir/ox-reveal.el")
+;; (load-file "~/.emacs.d/personal/prelude-personal-dir/htmlize.el")
+;; (setq org-reveal-root "file:///home/anand/Projects/js/reveal.js/js/reveal.js")
+;; (require 'ox-reveal)
+;; (require 'htmlize)
+
+
+;; mysql for emacs
+(require 'mysql)
+
+
+;; company
+
+;; dired history
+(require 'savehist)
+(add-to-list 'savehist-additional-variables 'helm-dired-history-variable)
+(savehist-mode 1)
+(eval-after-load 'dired
+  '(progn (require 'helm-dired-history)
+          (define-key dired-mode-map "," 'helm-dired-history-view)))
+
+
+;; smart tab
+;;(require 'smart-tab)
+;; (global-smart-tab-mode 1)
+
+;; (require 'yasnippet)
+;; (add-to-list 'hippie-expand-try-functions-list
+;;              'yas/hippie-try-expand) ;put yasnippet in hippie-expansion list
+
+;; (setq smart-tab-using-hippie-expand t)
+;; (global-smart-tab-mode t)
+
+
+;; yow - easter egg
+;; (unless (file-exists-p "~/.emacs.d/personal/yow.txt.gz")
+;;   (shell-command "wget bit.ly/emacs-yow -O ~/.emacs.d/personal/yow.txt.gz"))
+;; (setq yow-file "~/.emacs.d/yow.txt.gz")
+
+
+(provide 'config)
 ;;; config.el ends here
