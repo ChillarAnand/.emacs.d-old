@@ -1,6 +1,10 @@
-;; key bindings
+;;; key-bindings.el --- key bindings
+;;-*- lexical-binding: t; -*-
 
-;;; Code:
+;; Copyright (C) 2015  K3
+
+;; Author: K3;;; Code: <k3@k3-desktop>
+;; Keywords:
 
 
 (global-set-key (kbd "C-c C-v") 'eval-buffer)
@@ -62,7 +66,7 @@
 (key-chord-define-global "uu" 'undo-tree-visualize)
 (key-chord-define-global "xx" 'execute-extended-command)
 (key-chord-define-global "dd" 'prelude-kill-whole-line)
-(key-chord-define-global "md" 'ido-dired)
+(key-chord-define-global "md" 'helm-dired-history-view)
 
 
 (defvar key-chord-tips

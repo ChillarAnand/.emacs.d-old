@@ -1,6 +1,50 @@
-;;; config - personal config for prelude emacs
-
+;;; config.el --- personal config
+;;
+;; Filename: config.el
+;; Description:
+;; Author: Anand
+;; Maintainer:
+;; Created: Tue Feb  3 16:33:34 2015 (+0530)
+;; Version:
+;; Package-Requires: ()
+;; Last-Updated:
+;;           By:
+;;     Update #: 0
+;; URL:
+;; Doc URL:
+;; Keywords:
+;; Compatibility:
+;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;;; Commentary:
+;;
+;;
+;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;;; Change Log:
+;;
+;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;; This program is free software: you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or (at
+;; your option) any later version.
+;;
+;; This program is distributed in the hope that it will be useful, but
+;; WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+;; General Public License for more details.
+;;
+;; You should have received a copy of the GNU General Public License
+;; along with GNU Emacs.  If not, see <http://www.gnu.org/licenses/>.
+;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 ;;; Code:
+
 
 ;; unzip zipped file dired
 (eval-after-load "dired-aux"
@@ -21,7 +65,8 @@
         (end (line-end-position arg)))
     (when mark-active
       (if (> (point) (mark))
-          (setq beg (save-excursion (goto-char (mark)) (line-beginning-position)))
+          (setq beg (save-excursion (goto-char (mark))
+                                    (line-beginning-position)))
         (setq end (save-excursion (goto-char (mark)) (line-end-position)))))
     (if (eq last-command 'copy-line)
         (kill-append (buffer-substring beg end) (< end beg))
@@ -93,6 +138,8 @@
 
 ;; mysql for emacs
 (require 'mysql)
+;;(prelude-require-package sqlup-mode)
+(add-hook 'sql-mode-hook 'sqlup-mode)
 
 
 ;; company
@@ -125,4 +172,5 @@
 
 
 (provide 'config)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; config.el ends here

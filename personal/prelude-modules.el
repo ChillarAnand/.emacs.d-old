@@ -11,9 +11,9 @@
 
 
 ;;; Programming languages support
-(require 'prelude-web) ;; Emacs mode for web templates
-(require 'prelude-css)
-(require 'prelude-js)
+;; (require 'prelude-web) ;; Emacs mode for web templates
+;;(require 'prelude-css)
+;;(require 'prelude-js)
 (require 'prelude-lisp)
 (require 'prelude-org) ;; Org-mode helps you keep TODO lists, notes and more
 (require 'prelude-shell)
