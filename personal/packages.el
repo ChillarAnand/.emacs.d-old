@@ -1,57 +1,19 @@
-;;; packages.el ---
+ ;;; packages.el --- 3rd party packages.
 ;;
 ;; Filename: packages.el
 ;; Description:
-;; Author: K3
-;; Maintainer:
-;; Created: Tue Feb  3 11:06:20 2015 (+0530)
-;; Version:
-;; Package-Requires: ()
-;; Last-Updated:
-;;           By:
-;;     Update #: 0
-;; URL:
-;; Doc URL:
-;; Keywords:
-;; Compatibility:
-;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;
+;; Author: Anand
 ;;; Commentary:
-;;
-;;
-;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;
-;;; Change Log:
-;;
-;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;
-;; This program is free software: you can redistribute it and/or modify
-;; it under the terms of the GNU General Public License as published by
-;; the Free Software Foundation, either version 3 of the License, or (at
-;; your option) any later version.
-;;
-;; This program is distributed in the hope that it will be useful, but
-;; WITHOUT ANY WARRANTY; without even the implied warranty of
-;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-;; General Public License for more details.
-;;
-;; You should have received a copy of the GNU General Public License
-;; along with GNU Emacs.  If not, see <http://www.gnu.org/licenses/>.
-;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;;; Code:
 
 
-;;; code:
-
-
-(prelude-require-packages '(use-package paredit helm-swoop multiple-cursors
+(prelude-require-packages '(use-package helm-swoop multiple-cursors
                              delight real-auto-save company header2
-                             web-mode sqlup-mode))
+                             web-mode sqlup-mode company-quickhelp elpy
+                             perspective nyan-mode magit sx smartparens
+                             edit-server paredit))
+
 
 (require 'use-package)
 
@@ -62,7 +24,7 @@
   :init
   (progn
     (add-hook 'prog-mode-hook 'real-auto-save-mode)
-    (setq real-auto-save-interval 2)))
+    (setq real-auto-save-interval 8)))
 
 
 (use-package paredit
@@ -123,23 +85,14 @@
   (progn
     (add-hook 'emacs-lisp-mode-hook 'auto-make-header)))
 
+
 (use-package web-mode
   :init
   (progn
+
     (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
 
-    (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
-    (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
-    (add-to-list 'auto-mode-alist '("\\.[agj]sp\\'" . web-mode))
-    (add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
-    (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
-    (add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
-    (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
-
-    (set-face-attribute 'web-mode-javascript-string-face nil :foreground "green")
-
-    (setq web-mode-engines-alist
-          '(("django" . "\\.html\\'")))
+    (setq web-mode-engines-alist '(("django" . "\\.html\\'")))
 
     (setq web-mode-markup-indent-offset 2)
     (setq web-mode-code-indent-offset 2)
@@ -149,25 +102,103 @@
     (setq web-mode-enable-auto-expanding t)
     (setq web-mode-enable-css-colorization t)
 
-    ;; (setq web-mode-ac-sources-alist
-    ;;       '(("css" . (ac-source-css-property))
-    ;;         ("html" . (ac-source-words-in-buffer ac-source-abbrev))))
+    (set (make-local-variable 'company-backends) '(company-css))
 
-    (local-set-key (kbd "RET") 'newline-and-indent)
+    (bind-key "C-c C-c" 'web-mode-comment-or-uncomment)))
 
-    (sp-with-modes '(web-mode)
-      (sp-local-pair "%" "%"
-                     :unless '(sp-in-string-p)
-                     :post-handlers '(((lambda (&rest _ignored)
-                                         (just-one-space)
-                                         (save-excursion (insert " ")))
-                                       "SPC" "=" "#")))
-      (sp-local-pair "<% "  " %>" :insert "C-c %")
-      (sp-local-pair "<%= " " %>" :insert "C-c =")
-      (sp-local-pair "<%# " " %>" :insert "C-c #")
-      (sp-local-tag "%" "<% "  " %>")
-      (sp-local-tag "=" "<%= " " %>")
-      (sp-local-tag "#" "<%# " " %>"))
+
+(use-package company-quickhelp
+  :init
+  (progn
+    (company-quickhelp-mode 1)))
+
+
+(use-package elpy
+  :init
+  (progn
+
+    ;; to export venv
+    (let ((workon-home (expand-file-name "~/.virtualenvs/")))
+      (setenv "WORKON_HOME" workon-home)
+      (setenv "VIRTUALENVWRAPPER_HOOK_DIR" workon-home))
+
+    (elpy-enable)
+    (elpy-use-ipython)
+    (defalias 'workon 'pyvenv-workon)))
+
+
+(use-package nyan-mode
+  :init
+  (nyan-mode))
+
+
+(use-package magit
+  :init
+  (setq magit-status-buffer-switch-function 'switch-to-buffer))
+
+
+(use-package sx
+  :init
+  (progn
+    (require 'sx-load)))
+
+
+(use-package smartparens
+  :init
+  (progn
+    (require 'smartparens-config)
+    (smartparens-strict-mode t)))
+
+
+(use-package edit-server
+  :init
+  (progn
+    (when (require 'edit-server nil t)
+      (setq edit-server-new-frame nil)
+      (edit-server-start))))
+
+
+(use-package mysql
+  :init
+  (progn
+    (require 'sql)
+    (add-hook 'sql-mode-hook 'sqlup-mode)
+    (sql-set-product "mysql")
+
+    (add-hook 'sql-interactive-mode-hook
+              (lambda ()
+                (toggle-truncate-lines t)))
+
+    (setq sql-connection-alist
+          '((pool-server
+             (sql-server sql-server-address)
+             (sql-user sql-server-user)
+             (sql-password sql-server-password)
+             (sql-database sql-server-database)
+             (sql-port sql-server-port))
+
+            (pool-local
+             (sql-server sql-local-server)
+             (sql-user sql-local-user)
+             (sql-password sql-local-password)
+             (sql-database sql-local-database)
+             (sql-port sql-local-port))))
+
+    (defun sql-connect-preset (name)
+      "Connect to a predefined SQL connection listed in `sql-connection-alist'"
+      (eval `(let ,(cdr (assoc name sql-connection-alist))
+               (flet ((sql-get-login (&rest what)))
+                 (sql-product-interactive sql-product)))))
+
+    (defun sql-pool-server ()
+      (interactive)
+      (load-file "~/.emacs.d/.private.el")
+      (sql-connect-preset 'pool-server))
+
+    (defun sql-pool-local ()
+      (interactive)
+      (load-file "~/.emacs.d/.private.el")
+      (sql-connect-preset 'pool-local))
 
     ))
 
