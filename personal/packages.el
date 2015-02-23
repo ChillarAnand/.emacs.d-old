@@ -12,7 +12,7 @@
                              delight real-auto-save company header2
                              web-mode sqlup-mode company-quickhelp elpy
                              perspective nyan-mode magit sx smartparens
-                             edit-server paredit))
+                             edit-server paredit guide-key))
 
 
 (require 'use-package)
@@ -201,6 +201,14 @@
       (sql-connect-preset 'pool-local))
 
     ))
+
+
+(use-package guide-key
+  :init
+  (progn
+    (setq guide-key/guide-key-sequence '("C-x" "C-c" "C-c p"))
+    (guide-key-mode 1)))
+
 
 (provide 'packages)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
