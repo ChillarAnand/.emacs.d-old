@@ -12,7 +12,7 @@
                              delight real-auto-save company header2
                              web-mode sqlup-mode company-quickhelp elpy
                              perspective nyan-mode magit sx smartparens
-                             edit-server paredit))
+                             edit-server paredit guide-key helm-descbinds))
 
 
 (require 'use-package)
@@ -104,6 +104,7 @@
 
     (set (make-local-variable 'company-backends) '(company-css))
 
+    (define-key paredit-mode-map (kbd "M-;") nil)
     (bind-key "C-c C-c" 'web-mode-comment-or-uncomment)))
 
 
@@ -124,7 +125,8 @@
 
     (elpy-enable)
     (elpy-use-ipython)
-    (defalias 'workon 'pyvenv-workon)))
+    (defalias 'workon 'pyvenv-workon)
+    (setq elpy-test-runner 'elpy-test-pytest-runner)))
 
 
 (use-package nyan-mode
@@ -169,6 +171,8 @@
               (lambda ()
                 (toggle-truncate-lines t)))
 
+    (load-file "~/.emacs.d/.private.el")
+
     (setq sql-connection-alist
           '((pool-server
              (sql-server sql-server-address)
@@ -192,15 +196,24 @@
 
     (defun sql-pool-server ()
       (interactive)
-      (load-file "~/.emacs.d/.private.el")
       (sql-connect-preset 'pool-server))
 
     (defun sql-pool-local ()
       (interactive)
-      (load-file "~/.emacs.d/.private.el")
       (sql-connect-preset 'pool-local))
 
     ))
+
+
+(use-package guide-key
+  :init
+  (progn
+    (setq guide-key/guide-key-sequence '("C" "C-x" "C-c" "C-c p"))
+    (guide-key-mode 1)))
+
+
+(use-package helm-descbinds)
+
 
 (provide 'packages)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
