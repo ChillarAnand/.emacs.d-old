@@ -26,7 +26,6 @@
 
 (key-chord-define-global "gg" 'beginning-of-buffer)
 (key-chord-define-global "GG" 'end-of-buffer)
-(key-chord-define-global "ff" 'helm-projectile-find-file)
 
 (key-chord-define-global "ps" 'helm-projectile-switch-project)
 (key-chord-define-global "pf" 'helm-projectile-find-file)
@@ -40,8 +39,8 @@
 
 (key-chord-define-global "mg" 'magit-status)
 
-(key-chord-define-global "jb" 'pop-global-mark)
 (key-chord-define-global "mm" 'set-mark-command)
+(key-chord-define-global "sm" 'set-mark-command)
 
 (key-chord-define-global "kf" 'kill-this-buffer)
 (key-chord-define-global "x0" 'delete-window)
@@ -67,13 +66,13 @@
 (key-chord-define-global "xx" 'execute-extended-command)
 (key-chord-define-global "dd" 'prelude-kill-whole-line)
 (key-chord-define-global "md" 'helm-dired-history-view)
+(key-chord-define-global "yy" 'copy-line)
 
 
 (defvar key-chord-tips
   '("pt prelude-tip-of-the-day"
     "kt key-chord-tips"
 
-    "ff helm-projectile-find-file"
     "gg beginning-of-buffer"
     "GG end-of-buffer"
 
@@ -89,8 +88,8 @@
 
     "mg magit-status"
 
-    "jb pop-global-mark"
     "mm set-mark-command"
+    "sm set-mark-command"
 
     "kf kill-this-buffer"
     "kk delete-other-windows"

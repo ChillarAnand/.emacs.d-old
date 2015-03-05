@@ -39,14 +39,9 @@
   (if (and arg (not (= 1 arg))) (message "%d lines copied" arg)))
 
 
-(require 'key-chord)
-(key-chord-define-global "yy" 'copy-line)
-
-
 (semantic-mode 1)
 
 
-;; python mode settings
 (global-set-key (kbd "M-,") 'pop-tag-mark)
 
 
@@ -56,6 +51,60 @@
 ;; (setq org-reveal-root "file:///home/anand/Projects/js/reveal.js/js/reveal.js")
 ;; (require 'ox-reveal)
 ;; (require 'htmlize)
+
+(defun elpy-info ()
+  "Show elpy env variables."
+  (interactive)
+  (message "WORKON_HOME: %S
+VIRUTALENVWRAPPER_HOOK_DIR: %S
+DJANGO_SETTINGS_MODULE: %S
+VIRTUAL_ENV: %S
+pyvenv-virtualenvwrapper-python: %s"
+
+           (getenv "WORKON_HOME")
+           (getenv "VIRTUALENVWRAPPER_HOOK_DIR")
+           (getenv "DJANGO_SETTINGS_MODULE")
+           (getenv "VIRTUAL_ENV")
+           (getenv "pyvenv-virtualenvwrapper-python")
+           ))
+
+(defun real-auto-save-info ()
+  "Show real-auto-save variables list.")
+
+
+;; activate space to ctrl on start
+(defun space-to-ctrl-start ()
+"Activate space to ctrl programme."
+    (interactive)
+    (shell-command "~/projects/Space2Ctrl/s2cctl start"))
+
+(defun space-to-ctrl-stop ()
+  "Deactivate space to ctrl programme."
+  (interactive)
+  (shell-command "~/projects/Space2Ctrl/s2cctl stop"))
+(space-to-ctrl-stop)
+(space-to-ctrl-start)
+
+
+(defun company-yasnippet-or-completion ()
+  "Solve company yasnippet conflicts."
+  (interactive)
+  (let ((yas-fallback-behavior
+         (apply 'company-complete-common nil)))
+    (yas-expand)))
+
+(add-hook 'company-mode-hook
+          (lambda ()
+            (substitute-key-definition
+             'company-complete-common
+             'company-yasnippet-or-completion
+             company-active-map)))
+
+(defun visit-multi-term-buffer ()
+  "Create or visit a multi terminal buffer."
+  (interactive)
+  (multi-term))
+
 
 
 

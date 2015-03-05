@@ -12,40 +12,46 @@
                              delight real-auto-save company header2
                              web-mode sqlup-mode company-quickhelp elpy
                              perspective nyan-mode magit sx smartparens
-                             edit-server paredit guide-key helm-descbinds))
+                             edit-server paredit guide-key helm-descbinds
+                             multi-term free-keys pony-mode helm electric-case))
 
 
 (require 'use-package)
 
-(use-package helm-swoop)
 
-
-(use-package real-auto-save
+(use-package smartparens
   :init
   (progn
-    (add-hook 'prog-mode-hook 'real-auto-save-mode)
-    (setq real-auto-save-interval 8)))
+    (require 'smartparens-config)
+    (turn-on-smartparens-strict-mode)))
 
 
-(use-package paredit
+(use-package elpy
   :init
   (progn
-    (autoload 'enable-paredit-mode
-      "paredit" "Turn on pseudo-structural editing of Lisp code." t)
 
-    (add-hook 'prog-mode-hook 'enable-paredit-mode)
+    ;; to export venv
+    ;; (let ((workon-home (expand-file-name "~/.virtualenvs/")))
+    ;;   (setenv "WORKON_HOME" workon-home)
+    ;;   (setenv "VIRTUALENVWRAPPER_HOOK_DIR" workon-home))
 
-    ;; no space before parens
-    (defun paredit-space-for-delimiter-p (endp delimiter)
-      (and (not (if endp (eobp) (bobp)))
-           (memq (char-syntax (if endp (char-after) (char-before)))
-                 (list ?\"  ;; REMOVED ?w ?_
-                       (let ((matching (matching-paren delimiter)))
-                         (and matching (char-syntax matching)))))))
+    (elpy-enable)
+    (elpy-use-ipython)
+    (defalias 'workon 'pyvenv-workon)
+    (setq elpy-test-runner 'elpy-test-pytest-runner)
 
-    (global-set-key (kbd "{") 'paredit-open-curly)
-    (global-set-key (kbd "[") 'paredit-open-square)
-    (global-set-key (kbd "<") 'paredit-open-angled)))
+    (require 'smartparens-config)
+    (turn-on-smartparens-strict-mode)
+
+    (define-key smartparens-mode-map (kbd "M up") nil)
+    (define-key smartparens-mode-map (kbd "M down") nil)))
+
+
+;; (use-package real-auto-save
+;;   :init
+;;   (progn
+;;     (add-hook 'prog-mode-hook 'real-auto-save-mode)
+;;     (setq real-auto-save-interval 11)))
 
 
 (use-package multiple-cursors
@@ -73,11 +79,17 @@
 (use-package company
   :init
   (progn
-    (setq company-idle-delay 0.5)
-    (setq company-tooltip-limit 10)
+    (global-company-mode 1)
+
+    (setq company-idle-delay 0)
+    (setq company-tooltip-limit 5)
     (setq company-minimum-prefix-length 1)
     (setq company-tooltip-flip-when-above t)
-    (global-company-mode 1)))
+
+    (define-key company-active-map (kbd "M-n") nil)
+    (define-key company-active-map (kbd "M-p") nil)
+    (define-key company-active-map (kbd "C-n") #'company-select-next)
+    (define-key company-active-map (kbd "C-p") #'company-select-previous)))
 
 
 (use-package header2
@@ -104,29 +116,14 @@
 
     (set (make-local-variable 'company-backends) '(company-css))
 
-    (define-key paredit-mode-map (kbd "M-;") nil)
-    (bind-key "C-c C-c" 'web-mode-comment-or-uncomment)))
+    (define-key prelude-mode-map (kbd "C-c C-i") nil)
+    (bind-key "C-c C-i" 'web-mode-buffer-indent)))
 
 
 (use-package company-quickhelp
   :init
   (progn
     (company-quickhelp-mode 1)))
-
-
-(use-package elpy
-  :init
-  (progn
-
-    ;; to export venv
-    (let ((workon-home (expand-file-name "~/.virtualenvs/")))
-      (setenv "WORKON_HOME" workon-home)
-      (setenv "VIRTUALENVWRAPPER_HOOK_DIR" workon-home))
-
-    (elpy-enable)
-    (elpy-use-ipython)
-    (defalias 'workon 'pyvenv-workon)
-    (setq elpy-test-runner 'elpy-test-pytest-runner)))
 
 
 (use-package nyan-mode
@@ -143,13 +140,6 @@
   :init
   (progn
     (require 'sx-load)))
-
-
-(use-package smartparens
-  :init
-  (progn
-    (require 'smartparens-config)
-    (smartparens-strict-mode t)))
 
 
 (use-package edit-server
@@ -200,19 +190,46 @@
 
     (defun sql-pool-local ()
       (interactive)
-      (sql-connect-preset 'pool-local))
-
-    ))
+      (sql-connect-preset 'pool-local))))
 
 
 (use-package guide-key
   :init
   (progn
-    (setq guide-key/guide-key-sequence '("C" "C-x" "C-c" "C-c p"))
+    (setq guide-key/guide-key-sequence
+          '("C" "ESC"
+            "C-c" "C-h" "C-x"
+            "C-c p" "C-x r"
+            "C-c C-e" "C-c C-t"))
     (guide-key-mode 1)))
 
 
+(use-package multi-term
+  :init
+  (progn
+    (setq multi-term-program "/bin/zsh")
+    (bind-key "C-c C-t" 'multi-term)
+    (bind-key "C-c C-n" 'multi-term-next)
+    (bind-key "C-c C-p" 'multi-term-prev)))
+
+
+(use-package helm
+  :init
+  (progn
+    (bind-key "C-x r l" 'helm-bookmarks)))
+
+
+(use-package helm-swoop)
+(use-package free-keys)
+(use-package pony-mode)
 (use-package helm-descbinds)
+
+
+(use-package electric-case
+  :init
+  (progn
+    (add-hook 'python-mode-hook 'electric-case-java-init)
+    (setq electric-case-convert-calls t)))
 
 
 (provide 'packages)
