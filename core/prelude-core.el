@@ -1,6 +1,6 @@
 ;;; prelude-core.el --- Emacs Prelude: Core Prelude functions.
 ;;
-;; Copyright © 2011-2014 Bozhidar Batsov
+;; Copyright © 2011-2015 Bozhidar Batsov
 ;;
 ;; Author: Bozhidar Batsov <bozhidar@batsov.com>
 ;; URL: https://github.com/bbatsov/prelude
@@ -357,11 +357,12 @@ Repeated invocations toggle between the two most recently open buffers."
   "Kill all buffers but the current one.
 Doesn't mess with special buffers."
   (interactive)
-  (-each
-   (->> (buffer-list)
-     (-filter #'buffer-file-name)
-     (--remove (eql (current-buffer) it)))
-   #'kill-buffer))
+  (when (y-or-n-p "Are you sure you want to kill all buffers but the current one? ")
+    (-each
+        (->> (buffer-list)
+             (-filter #'buffer-file-name)
+             (--remove (eql (current-buffer) it)))
+      #'kill-buffer)))
 
 (defun prelude-create-scratch-buffer ()
   "Create a new scratch buffer."
