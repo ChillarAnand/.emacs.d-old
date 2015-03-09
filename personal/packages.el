@@ -228,7 +228,33 @@
 (use-package electric-case
   :init
   (progn
-    (add-hook 'python-mode-hook 'electric-case-java-init)
+
+    (defun electric-case-python-init ()
+
+      (electric-case-mode 1)
+      (setq electric-case-max-iteration 2)
+
+      (setq electric-case-criteria
+            (lambda (b e)
+              (let ((proper (electric-case--possible-properties b e))
+                    (key (key-description (this-single-command-keys))))
+                (cond
+                 ((member 'font-lock-variable-name-face proper)
+                  ;; #ifdef A_MACRO  /  int variable_name;
+                  (if (member '(cpp-macro) (python-guess-basic-syntax)) 'usnake 'snake))
+                 ((member 'font-lock-string-face proper) nil)
+                 ((member 'font-lock-comment-face proper) nil)
+                 ((member 'font-lock-keyword-face proper) nil)
+                 ((member 'font-lock-function-name-face proper) 'snake)
+                 ((member 'font-lock-type-face proper) 'snake)
+                 (electric-case-convert-calls 'snake)
+                 (t nil)))))
+
+      (defadvice electric-case-trigger (around electric-case-c-try-semi activate)
+        (when (and electric-case-mode
+                   (eq major-mode 'python-mode)))))
+
+    (add-hook 'python-mode-hook 'electric-case-python-init)
     (setq electric-case-convert-calls t)))
 
 
