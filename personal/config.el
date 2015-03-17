@@ -9,6 +9,9 @@
 ;;; Code:
 
 
+;; disable whitespace mode
+(setq prelude-whitespace nil)
+
 ;; unzip zipped file dired
 (eval-after-load "dired-aux"
   '(add-to-list 'dired-compress-file-suffixes
@@ -46,11 +49,12 @@
 
 
 ;; org reveal
-;; (load-file "~/.emacs.d/personal/prelude-personal-dir/ox-reveal.el")
-;; (load-file "~/.emacs.d/personal/prelude-personal-dir/htmlize.el")
-;; (setq org-reveal-root "file:///home/anand/Projects/js/reveal.js/js/reveal.js")
-;; (require 'ox-reveal)
-;; (require 'htmlize)
+(load-file "~/.emacs.d/vendor/ox-reveal.el")
+(load-file "~/.emacs.d/vendor/htmlize.el")
+(setq org-reveal-root "file:///home/anand/.emacs.d/vendor/reveal.js/js/reveal.js")
+(require 'ox-reveal)
+(require 'htmlize)
+
 
 (defun elpy-info ()
   "Show elpy env variables."
@@ -104,8 +108,6 @@ pyvenv-virtualenvwrapper-python: %s"
   "Create or visit a multi terminal buffer."
   (interactive)
   (multi-term))
-
-
 
 
 (provide 'config)

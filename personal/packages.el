@@ -13,7 +13,8 @@
                              web-mode sqlup-mode company-quickhelp elpy
                              perspective nyan-mode magit sx smartparens
                              edit-server paredit guide-key helm-descbinds
-                             multi-term free-keys pony-mode helm electric-case))
+                             multi-term free-keys pony-mode helm electric-case
+                             helm-github-stars))
 
 
 (require 'use-package)
@@ -257,6 +258,10 @@
     (add-hook 'python-mode-hook 'electric-case-python-init)
     (setq electric-case-convert-calls t)))
 
+
+(use-package helm-github-stars
+  :init
+  (setq helm-github-stars-username "chillaranand"))
 
 (provide 'packages)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
