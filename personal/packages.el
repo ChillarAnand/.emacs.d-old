@@ -14,7 +14,7 @@
                              perspective nyan-mode magit sx smartparens
                              edit-server paredit guide-key helm-descbinds
                              multi-term free-keys pony-mode helm electric-case
-                             helm-github-stars))
+                             helm-github-stars auto-package-update))
 
 
 (require 'use-package)
@@ -262,6 +262,14 @@
 (use-package helm-github-stars
   :init
   (setq helm-github-stars-username "chillaranand"))
+
+
+(use-package auto-package-update
+  :init
+  (progn
+    (auto-package-update-maybe)
+    (setq auto-package-update-interval 7)))
+
 
 (provide 'packages)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
