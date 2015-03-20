@@ -13,8 +13,8 @@
                              web-mode sqlup-mode company-quickhelp elpy
                              perspective nyan-mode magit sx smartparens
                              edit-server paredit guide-key helm-descbinds
-                             multi-term free-keys pony-mode helm electric-case
-                             helm-github-stars auto-package-update))
+                             multi-term free-keys helm electric-case
+                             helm-github-stars auto-package-update smart-mode-line))
 
 
 (require 'use-package)
@@ -48,11 +48,11 @@
     (define-key smartparens-mode-map (kbd "M down") nil)))
 
 
-;; (use-package real-auto-save
-;;   :init
-;;   (progn
-;;     (add-hook 'prog-mode-hook 'real-auto-save-mode)
-;;     (setq real-auto-save-interval 11)))
+(use-package real-auto-save
+  :init
+  (progn
+    (add-hook 'prog-mode-hook 'real-auto-save-mode)
+    (setq real-auto-save-interval 5)))
 
 
 (use-package multiple-cursors
@@ -222,7 +222,6 @@
 
 (use-package helm-swoop)
 (use-package free-keys)
-(use-package pony-mode)
 (use-package helm-descbinds)
 
 
@@ -269,6 +268,14 @@
   (progn
     (auto-package-update-maybe)
     (setq auto-package-update-interval 7)))
+
+
+(use-package smart-mode-line
+  :init
+  (progn
+    (sml/setup)
+    (sml/apply-theme 'light)
+    (rich-minority-mode 1)))
 
 
 (provide 'packages)

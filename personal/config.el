@@ -109,6 +109,9 @@ pyvenv-virtualenvwrapper-python: %s"
   (interactive)
   (multi-term))
 
+;; save session
+(desktop-save-mode 1)
+
 
 (provide 'config)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

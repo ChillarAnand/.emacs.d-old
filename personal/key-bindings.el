@@ -13,8 +13,6 @@
 (global-set-key (kbd "C-?") 'help-command)
 (global-set-key (kbd "M-?") 'mark-paragraph)
 
-;;(global-set-key (kbd "C-h") 'paredit-backward-delete)
-
 (global-set-key (kbd "M-h") 'backward-kill-word)
 
 
@@ -126,6 +124,10 @@
 (setq prelude-tips (append prelude-tips key-chord-tips))
 
 (key-chord-mode +1)
+
+;;(global-set-key (kbd "C-h") 'paredit-backward-delete)
+;;(global-set-key (kbd "C-h") 'delete-backward-char)
+
 
 
 (provide 'key-bindings)
