@@ -14,7 +14,8 @@
                              perspective nyan-mode magit sx smartparens
                              edit-server paredit guide-key helm-descbinds
                              multi-term free-keys helm electric-case
-                             helm-github-stars auto-package-update smart-mode-line))
+                             helm-github-stars auto-package-update
+                             smart-mode-line circe))
 
 
 (require 'use-package)
@@ -276,6 +277,18 @@
     (sml/setup)
     (sml/apply-theme 'light)
     (rich-minority-mode 1)))
+
+
+(use-package circe
+  :init
+  (progn
+    (setq circe-network-options
+          `(("Freenode"
+             :nick "chillaranand"
+             :channels ("#emacs" "#emacs-circe" "#python-india" "#python-dev"
+                        "#emacs-elpy")
+             :nickserv-password ,freenode-password
+             )))))
 
 
 (provide 'packages)
