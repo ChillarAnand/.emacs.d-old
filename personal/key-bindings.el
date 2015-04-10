@@ -6,6 +6,7 @@
 ;; Author: K3;;; Code: <k3@k3-desktop>
 ;; Keywords:
 
+;;; Code:
 
 (global-set-key (kbd "C-c C-v") 'eval-buffer)
 (global-set-key (kbd "C-h C-m") 'discover-my-major)

@@ -17,6 +17,7 @@
   '(add-to-list 'dired-compress-file-suffixes
                 '("\\.zip\\'" ".zip" "unzip")))
 
+(add-hook 'python-mode-hook (turn-on-smartparens-strict-mode))
 
 ;; copy line
 (defun copy-line (arg)
@@ -56,24 +57,6 @@
 (require 'htmlize)
 
 
-(defun elpy-info ()
-  "Show elpy env variables."
-  (interactive)
-  (message "WORKON_HOME: %S
-VIRUTALENVWRAPPER_HOOK_DIR: %S
-DJANGO_SETTINGS_MODULE: %S
-VIRTUAL_ENV: %S
-pyvenv-virtualenvwrapper-python: %s"
-
-           (getenv "WORKON_HOME")
-           (getenv "VIRTUALENVWRAPPER_HOOK_DIR")
-           (getenv "DJANGO_SETTINGS_MODULE")
-           (getenv "VIRTUAL_ENV")
-           (getenv "pyvenv-virtualenvwrapper-python")
-           ))
-
-(defun real-auto-save-info ()
-  "Show real-auto-save variables list.")
 
 
 ;; activate space to ctrl on start
@@ -110,8 +93,46 @@ pyvenv-virtualenvwrapper-python: %s"
   (multi-term))
 
 ;; save session
-(desktop-save-mode 1)
+;; (desktop-save-mode 1)
 
+
+(defun elpy-info ()
+  "Show elpy env variables."
+  (interactive)
+  (message "WORKON_HOME: %S
+VIRUTALENVWRAPPER_HOOK_DIR: %S
+DJANGO_SETTINGS_MODULE: %S
+VIRTUAL_ENV: %S
+pyvenv-virtualenvwrapper-python: %s"
+
+           (getenv "WORKON_HOME")
+           (getenv "VIRTUALENVWRAPPER_HOOK_DIR")
+           (getenv "DJANGO_SETTINGS_MODULE")
+           (getenv "VIRTUAL_ENV")
+           (getenv "pyvenv-virtualenvwrapper-python")
+           ))
+
+(defun ras-info ()
+  "Show  env variables."
+  (interactive)
+  (message "timer: %S
+buffers: %S
+interval: %S"  real-auto-save-timer  real-auto-save-alist real-auto-save-interval))
+
+;; (defun message-beat ()
+;;   (message "re")  )
+
+;; (setq real-auto-save-timer
+;;       (run-at-time
+;;        (current-time) 2 'message-beat))
+
+;; (cancel-timer message-beat)
+
+;; (message "timer list: %S" timer-list)
+
+
+;; (defun real-auto-save-info ()
+;;   "Show real-auto-save variables list.")
 
 (provide 'config)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

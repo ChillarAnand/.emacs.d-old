@@ -1,4 +1,4 @@
- ;;; packages.el --- 3rd party packages.
+;;; packages.el --- 3rd party packages.
 ;;
 ;; Filename: packages.el
 ;; Description:
@@ -25,6 +25,7 @@
   :init
   (progn
     (require 'smartparens-config)
+    (smartparens-global-mode t) 
     (turn-on-smartparens-strict-mode)))
 
 
@@ -36,7 +37,7 @@
     ;; (let ((workon-home (expand-file-name "~/.virtualenvs/")))
     ;;   (setenv "WORKON_HOME" workon-home)
     ;;   (setenv "VIRTUALENVWRAPPER_HOOK_DIR" workon-home))
-
+    (setq python-indent-offset 4)
     (elpy-enable)
     (elpy-use-ipython)
     (defalias 'workon 'pyvenv-workon)
@@ -45,15 +46,15 @@
     (require 'smartparens-config)
     (turn-on-smartparens-strict-mode)
 
-    (define-key smartparens-mode-map (kbd "M up") nil)
-    (define-key smartparens-mode-map (kbd "M down") nil)))
+    (define-key smartparens-mode-map (kbd "M-<up>") nil)
+    (define-key smartparens-mode-map (kbd "M-<down>") nil)))
 
 
 (use-package real-auto-save
   :init
   (progn
     (add-hook 'prog-mode-hook 'real-auto-save-mode)
-    (setq real-auto-save-interval 5)))
+    (setq real-auto-save-interval 4)))
 
 
 (use-package multiple-cursors
@@ -135,7 +136,9 @@
 
 (use-package magit
   :init
-  (setq magit-status-buffer-switch-function 'switch-to-buffer))
+  (progn 
+    (setq magit-status-buffer-switch-function 'switch-to-buffer)
+    (setq magit-last-seen-setup-instructions "1.4.0")))
 
 
 (use-package sx
@@ -268,7 +271,7 @@
   :init
   (progn
     (auto-package-update-maybe)
-    (setq auto-package-update-interval 7)))
+    (setq auto-package-update-interval 30)))
 
 
 (use-package smart-mode-line
@@ -287,8 +290,12 @@
              :nick "chillaranand"
              :channels ("#emacs" "#emacs-circe" "#python-india" "#python-dev"
                         "#emacs-elpy")
-             :nickserv-password ,freenode-password
-             )))))
+             :nickserv-password ,freenode-password)))))
+
+(use-package auto-complete-rst
+  :init
+  (eval-after-load "rst" '(auto-complete-rst-init)))
+  
 
 
 (provide 'packages)
