@@ -15,18 +15,24 @@
                              edit-server paredit guide-key helm-descbinds
                              multi-term free-keys helm electric-case
                              helm-github-stars auto-package-update
-                             smart-mode-line circe))
+                             smart-mode-line circe paredit-everywhere wakatime-mode))
 
 
 (require 'use-package)
 
 
-(use-package smartparens
-  :init
-  (progn
-    (require 'smartparens-config)
-    (smartparens-global-mode t) 
-    (turn-on-smartparens-strict-mode)))
+;; (use-package smartparens
+;;   :init
+;;   (progn
+;;     (require 'smartparens-config)
+;;     (smartparens-global-mode t) 
+;;     (turn-on-smartparens-strict-mode)))
+
+;; (use-package paredit-everywhere
+;;   :init
+;;   (progn 
+;;     (add-hook 'prog-mode-hook 'paredit-everywhere-mode)))
+
 
 
 (use-package elpy
@@ -39,7 +45,7 @@
     ;;   (setenv "VIRTUALENVWRAPPER_HOOK_DIR" workon-home))
     (setq python-indent-offset 4)
     (elpy-enable)
-    (elpy-use-ipython)
+    ;; (elpy-use-ipython)
     (defalias 'workon 'pyvenv-workon)
     (setq elpy-test-runner 'elpy-test-pytest-runner)
 
@@ -109,13 +115,18 @@
 
     (setq web-mode-engines-alist '(("django" . "\\.html\\'")))
 
-    (setq web-mode-markup-indent-offset 2)
-    (setq web-mode-code-indent-offset 2)
-    (setq web-mode-css-indent-offset 2)
+    (setq web-mode-markup-indent-offset 4)
+    (setq web-mode-code-indent-offset 4)
+    (setq web-mode-css-indent-offset 4)
+    (setq web-mode-js-indent-offset 4)
+    (setq web-mode-script-padding 4)
 
     (setq web-mode-enable-auto-pairing t)
     (setq web-mode-enable-auto-expanding t)
     (setq web-mode-enable-css-colorization t)
+
+    (set-face-attribute 'web-mode-css-rule-face nil :foreground "Pink3")
+
 
     (set (make-local-variable 'company-backends) '(company-css))
 
@@ -292,10 +303,16 @@
                         "#emacs-elpy")
              :nickserv-password ,freenode-password)))))
 
-(use-package auto-complete-rst
+
+;; (use-package auto-complete-rst
+;;   :init
+;;   ;; (auto-complete-rst-init)
+;;   (eval-after-load "rst" '(auto-complete-rst-init)))
+
+
+(use-package wakatime-mode
   :init
-  (eval-after-load "rst" '(auto-complete-rst-init)))
-  
+  (global-wakatime-mode))
 
 
 (provide 'packages)
