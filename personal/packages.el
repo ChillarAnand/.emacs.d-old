@@ -8,14 +8,17 @@
 ;;; Code:
 
 
-(prelude-require-packages '(use-package helm-swoop multiple-cursors
-                             delight real-auto-save company header2
-                             web-mode sqlup-mode company-quickhelp elpy
-                             perspective nyan-mode magit sx smartparens
-                             edit-server paredit guide-key helm-descbinds
-                             multi-term free-keys helm electric-case
-                             helm-github-stars auto-package-update
-                             smart-mode-line circe paredit-everywhere wakatime-mode))
+(prelude-require-packages
+ '(use-package helm-swoop multiple-cursors
+    delight real-auto-save company header2
+    web-mode sqlup-mode company-quickhelp elpy
+    perspective nyan-mode magit sx smartparens
+    edit-server paredit guide-key helm-descbinds
+    multi-term free-keys helm electric-case
+    helm-github-stars auto-package-update
+    smart-mode-line circe paredit-everywhere
+    skewer-mode simple-httpd js2-mode impatient-mode
+    pony-mode))
 
 
 (require 'use-package)
@@ -53,7 +56,14 @@
     (turn-on-smartparens-strict-mode)
 
     (define-key smartparens-mode-map (kbd "M-<up>") nil)
-    (define-key smartparens-mode-map (kbd "M-<down>") nil)))
+    (define-key smartparens-mode-map (kbd "M-<down>") nil)
+    (define-key elpy-mode-map (kbd "C-c C-c") 'my/send-region-or-buffer)
+    (defun my/send-region-or-buffer (&optional arg)
+      (interactive "P")
+      (elpy-shell-send-region-or-buffer arg)
+      (with-current-buffer (process-buffer (elpy-shell-get-or-create-process))
+        (set-window-point (get-buffer-window (current-buffer))
+                          (point-max))))))
 
 
 (use-package real-auto-save
@@ -125,7 +135,7 @@
     (setq web-mode-enable-auto-expanding t)
     (setq web-mode-enable-css-colorization t)
 
-    (set-face-attribute 'web-mode-css-rule-face nil :foreground "Pink3")
+    ;; (set-face-attribute 'web-mode-css-rule-face nil :foreground "Pink3")
 
 
     (set (make-local-variable 'company-backends) '(company-css))
@@ -310,9 +320,15 @@
 ;;   (eval-after-load "rst" '(auto-complete-rst-init)))
 
 
-(use-package wakatime-mode
+;; (use-package wakatime-mode
+;;   :init
+;;   (global-wakatime-mode))
+
+(use-package impatient-mode)
+
+(use-package pony-mode
   :init
-  (global-wakatime-mode))
+  (add-hook 'python-mode-hook 'pony-mode))
 
 
 (provide 'packages)
