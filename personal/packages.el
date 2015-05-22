@@ -10,8 +10,8 @@
 
 (prelude-require-packages
  '(use-package helm-swoop multiple-cursors
-    delight real-auto-save company header2
-    web-mode sqlup-mode company-quickhelp elpy
+    delight company header2 real-auto-save
+    web-mode sqlup-mode company-quickhelp
     perspective nyan-mode magit sx smartparens
     edit-server paredit guide-key helm-descbinds
     multi-term free-keys helm electric-case
@@ -24,24 +24,29 @@
 (require 'use-package)
 
 
-;; (use-package smartparens
-;;   :init
-;;   (progn
-;;     (require 'smartparens-config)
-;;     (smartparens-global-mode t) 
-;;     (turn-on-smartparens-strict-mode)))
-
-;; (use-package paredit-everywhere
-;;   :init
-;;   (progn 
-;;     (add-hook 'prog-mode-hook 'paredit-everywhere-mode)))
+(use-package smartparens
+  :init
+  (progn
+    (require 'smartparens-config)
+    (smartparens-global-mode 1)
+    (defun strict-smartparens ()
+      (turn-on-smartparens-strict-mode))
+    (add-hook 'prog-mode-hook 'strict-smartparens)
+    (define-key smartparens-mode-map (kbd "C-<right>") #'sp-forward-slurp-sexp)))
 
 
+(use-package paredit-everywhere
+  :init
+  (progn
+    (add-hook 'prog-mode-hook 'paredit-everywhere-mode)))
+
+(add-to-list 'load-path "~/.emacs.d/elpa/elpy")
+(load "elpy" nil t)
+(elpy-enable)
 
 (use-package elpy
   :init
   (progn
-
     ;; to export venv
     ;; (let ((workon-home (expand-file-name "~/.virtualenvs/")))
     ;;   (setenv "WORKON_HOME" workon-home)
@@ -57,6 +62,15 @@
 
     (define-key smartparens-mode-map (kbd "M-<up>") nil)
     (define-key smartparens-mode-map (kbd "M-<down>") nil)
+    (define-key elpy-mode-map (kbd "C-<right>") nil)
+    (define-key elpy-mode-map (kbd "C-<left>") nil)
+
+    ;; (define-key sql-mode-map (kbd "C-c C-i") 'elpy-buffer-indent)
+    (defun elpy-buffer-indent ()
+      "Indent all buffer."
+      (interactive)
+      (indent-region (point-min) (point-max)))
+
     (define-key elpy-mode-map (kbd "C-c C-c") 'my/send-region-or-buffer)
     (defun my/send-region-or-buffer (&optional arg)
       (interactive "P")
@@ -128,15 +142,14 @@
     (setq web-mode-markup-indent-offset 4)
     (setq web-mode-code-indent-offset 4)
     (setq web-mode-css-indent-offset 4)
-    (setq web-mode-js-indent-offset 4)
-    (setq web-mode-script-padding 4)
+    (setq web-mode-js-indent-offset 0)
+    (setq web-mode-script-padding 0)
 
     (setq web-mode-enable-auto-pairing t)
     (setq web-mode-enable-auto-expanding t)
     (setq web-mode-enable-css-colorization t)
 
     ;; (set-face-attribute 'web-mode-css-rule-face nil :foreground "Pink3")
-
 
     (set (make-local-variable 'company-backends) '(company-css))
 
@@ -157,7 +170,7 @@
 
 (use-package magit
   :init
-  (progn 
+  (progn
     (setq magit-status-buffer-switch-function 'switch-to-buffer)
     (setq magit-last-seen-setup-instructions "1.4.0")))
 
@@ -216,7 +229,15 @@
 
     (defun sql-pool-local ()
       (interactive)
-      (sql-connect-preset 'pool-local))))
+      (sql-connect-preset 'pool-local))
+
+    (define-key sql-mode-map (kbd "C-c C-c") 'mysql-send-paragraph)
+    (defun mysql-send-paragraph ()
+      (interactive)
+      (sql-send-paragraph)
+      (with-current-buffer (process-buffer "*SQL*")
+        (set-window-point (get-buffer-window (current-buffer))
+                          (point-max))))))
 
 
 (use-package guide-key
@@ -288,11 +309,11 @@
   (setq helm-github-stars-username "chillaranand"))
 
 
-(use-package auto-package-update
-  :init
-  (progn
-    (auto-package-update-maybe)
-    (setq auto-package-update-interval 30)))
+;; (use-package auto-package-update
+;;   :init
+;;   (progn
+;;     (auto-package-update-maybe)
+;;     (setq auto-package-update-interval 30)))
 
 
 (use-package smart-mode-line

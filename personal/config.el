@@ -8,6 +8,10 @@
 
 ;;; Code:
 
+(flymake-mode-on)
+(defadvice flymake-post-syntax-check (before flymake-force-check-was-interrupted)
+  (setq flymake-check-was-interrupted t))
+(ad-activate 'flymake-post-syntax-check)
 
 ;; disable whitespace mode
 (setq prelude-whitespace nil)
@@ -133,6 +137,34 @@ interval: %S"  real-auto-save-timer  real-auto-save-alist real-auto-save-interva
 
 ;; (defun real-auto-save-info ()
 ;;   "Show real-auto-save variables list.")
+
+(bind-key "C-'" 'reselect-last-region)
+
+(defun reselect-last-region ()
+  (interactive)
+  (let ((start (mark t))
+        (end (point)))
+    (goto-char start)
+    (call-interactively' set-mark-command)
+    (goto-char end)))
+
+(defun print-region-point ()
+  (interactive)
+  (if (use-region-p)
+      (progn 
+        (message "b: %s, e: %s, p: %s" (region-beginning) (region-end) (point))
+        (let ((beg (region-beginning))
+              (end (region-end)))
+          (while (< (point) end)
+            (message ":: %s - %s " (point-at-bol) (point-at-eol))
+            (forward-line 1)))
+        (setq deactivate-mark nil))))
+
+(defun print-point ()
+  (interactive)
+  (message "%s" point))
+
+
 
 (provide 'config)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
