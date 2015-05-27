@@ -24,15 +24,15 @@
 (require 'use-package)
 
 
-(use-package smartparens
-  :init
-  (progn
-    (require 'smartparens-config)
-    (smartparens-global-mode 1)
-    (defun strict-smartparens ()
-      (turn-on-smartparens-strict-mode))
-    (add-hook 'prog-mode-hook 'strict-smartparens)
-    (define-key smartparens-mode-map (kbd "C-<right>") #'sp-forward-slurp-sexp)))
+;; (use-package smartparens
+;;   :init
+;;   (progn
+;;     (require 'smartparens-config)
+;;     (smartparens-global-mode 1)
+;;     (defun strict-smartparens ()
+;;       (turn-on-smartparens-strict-mode))
+;;     (add-hook 'prog-mode-hook 'strict-smartparens)
+;;     (define-key smartparens-mode-map (kbd "C-<right>") #'sp-forward-slurp-sexp)))
 
 
 (use-package paredit-everywhere
@@ -40,7 +40,7 @@
   (progn
     (add-hook 'prog-mode-hook 'paredit-everywhere-mode)))
 
-(add-to-list 'load-path "~/.emacs.d/elpa/elpy")
+(add-to-list 'load-path "~/projects/lisp/elpy")
 (load "elpy" nil t)
 (elpy-enable)
 
@@ -235,7 +235,7 @@
     (defun mysql-send-paragraph ()
       (interactive)
       (sql-send-paragraph)
-      (with-current-buffer (process-buffer "*SQL*")
+      (with-current-buffer (process-buffer (get-process "SQL"))
         (set-window-point (get-buffer-window (current-buffer))
                           (point-max))))))
 
@@ -330,8 +330,9 @@
     (setq circe-network-options
           `(("Freenode"
              :nick "chillaranand"
-             :channels ("#emacs" "#emacs-circe" "#python-india" "#python-dev"
-                        "#emacs-elpy")
+             :channels
+             ("#emacs" "#emacs-circe" "#emacs-elpy"
+              "#python-india" "#python-dev")
              :nickserv-password ,freenode-password)))))
 
 
@@ -350,6 +351,17 @@
 (use-package pony-mode
   :init
   (add-hook 'python-mode-hook 'pony-mode))
+
+
+(use-package highlight-symbol
+  :init
+  (progn 
+    (global-set-key [(control f3)] 'highlight-symbol)
+    (global-set-key [f3] 'highlight-symbol-next)
+    (global-set-key [(shift f3)] 'highlight-symbol-prev)
+    (global-set-key [(meta f3)] 'highlight-symbol-query-replace)
+    (highlight-symbol-mode 1)
+    (highlight-symbol-nav-mode 1)))
 
 
 (provide 'packages)
