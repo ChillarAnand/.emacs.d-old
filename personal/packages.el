@@ -247,7 +247,8 @@
           '("C" "ESC"
             "C-c" "C-h" "C-x"
             "C-c p" "C-x r"
-            "C-c C-e" "C-c C-t"))
+            "C-c C-e" "C-c C-t" "C-c C-p"
+            "C-c C-p g"))
     (guide-key-mode 1)))
 
 
@@ -332,8 +333,10 @@
              :nick "chillaranand"
              :channels
              ("#emacs" "#emacs-circe" "#emacs-elpy"
-              "#python-india" "#python-dev")
-             :nickserv-password ,freenode-password)))))
+              "#python-india" "#python-dev"
+              "#dgplug")
+             :nickserv-password ,freenode-password)))
+    (setq circe-reduce-lurker-spam t)))
 
 
 ;; (use-package auto-complete-rst
@@ -362,6 +365,11 @@
     (global-set-key [(meta f3)] 'highlight-symbol-query-replace)
     (highlight-symbol-mode 1)
     (highlight-symbol-nav-mode 1)))
+
+
+(use-package comment-dwim-2
+  :init
+  (global-set-key (kbd "M-;") 'comment-dwim-2))
 
 
 (provide 'packages)
