@@ -54,6 +54,7 @@
 
 
 ;; org reveal
+
 (load-file "~/.emacs.d/vendor/ox-reveal.el")
 (load-file "~/.emacs.d/vendor/htmlize.el")
 (setq org-reveal-root "file:///home/anand/.emacs.d/vendor/reveal.js/js/reveal.js")
@@ -121,7 +122,23 @@ pyvenv-virtualenvwrapper-python: %s"
   (interactive)
   (message "timer: %S
 buffers: %S
-interval: %S"  real-auto-save-timer  real-auto-save-alist real-auto-save-interval))
+interval: %S"  real-auto-save-timer  real-auto-save-buffers-list real-auto-save-interval))
+
+
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((python . t) (sh . t)))
+
+
+(defadvice py-postprocess-output-buffer (after my-py-postprocess-output-buffer activate)
+  (run-with-idle-timer 0 nil (lambda ()
+                               (let ((output-win (get-buffer-window py-output-buffer))
+                                     (orig-win (selected-window)))
+                                 (when output-win
+                                   (select-window output-win)
+                                   (end-of-buffer)
+                                   (select-window orig-win))))))
+
 
 ;; (defun message-beat ()
 ;;   (message "re")  )
@@ -137,6 +154,28 @@ interval: %S"  real-auto-save-timer  real-auto-save-alist real-auto-save-interva
 
 ;; (defun real-auto-save-info ()
 ;;   "Show real-auto-save variables list.")
+(add-hook 'evil-mode-hook 'evil-mode-bindings)
+
+    (defun evil-mode-bindings ()
+      "Bind symbols to digits."
+      (define-key key-translation-map (kbd "!") "1")
+      (define-key key-translation-map (kbd "@") (kbd "2"))
+      (define-key key-translation-map (kbd "#") (kbd "3"))
+      (define-key key-translation-map (kbd "$") (kbd "4"))
+      (define-key key-translation-map (kbd "%") "5")
+      (define-key key-translation-map (kbd "^") (kbd "6"))
+      (define-key key-translation-map (kbd "&") (kbd "7"))
+      (define-key key-translation-map (kbd "*") (kbd "8"))
+      (define-key key-translation-map (kbd "(") (kbd "9"))
+      (define-key key-translation-map (kbd ")") (kbd "0")))
+
+
+
+;;(define-key evil-normal-state-map "5" 'evil-beginning-of-line)
+
+
+
+
 
 (bind-key "C-'" 'reselect-last-region)
 
@@ -165,6 +204,7 @@ interval: %S"  real-auto-save-timer  real-auto-save-alist real-auto-save-interva
   (message "%s" point))
 
 
+(append grep-find-ignored-files "flycheck_*")
 
 (provide 'config)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

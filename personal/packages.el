@@ -8,17 +8,14 @@
 ;;; Code:
 
 
-(prelude-require-packages
- '(use-package helm-swoop multiple-cursors
-    delight company header2 real-auto-save
-    web-mode sqlup-mode company-quickhelp
-    perspective nyan-mode magit sx smartparens
-    edit-server paredit guide-key helm-descbinds
-    multi-term free-keys helm electric-case
-    helm-github-stars auto-package-update
-    smart-mode-line circe paredit-everywhere
-    skewer-mode simple-httpd js2-mode impatient-mode
-    pony-mode))
+(prelude-require-packages '(use-package helm-swoop multiple-cursors
+                             delight company header2
+                             web-mode sqlup-mode company-quickhelp
+                             perspective nyan-mode magit sx smartparens
+                             edit-server paredit guide-key helm-descbinds
+                             multi-term free-keys helm electric-case
+                             helm-github-stars auto-package-update
+                             smart-mode-line circe pony-mode))
 
 
 (require 'use-package)
@@ -40,10 +37,10 @@
   (progn
     (add-hook 'prog-mode-hook 'paredit-everywhere-mode)))
 
+
 (add-to-list 'load-path "~/projects/lisp/elpy")
 (load "elpy" nil t)
 (elpy-enable)
-
 (use-package elpy
   :init
   (progn
@@ -60,16 +57,18 @@
     (require 'smartparens-config)
     (turn-on-smartparens-strict-mode)
 
+    (define-key elpy-mode-map (kbd "C-c C-c") 'my/send-region-or-buffer)
+    (defun my/send-region-or-buffer (&optional arg)
+      (interactive "P")
+      (elpy-shell-send-region-or-buffer arg)
+      (with-current-buffer (process-buffer (elpy-shell-get-or-create-process))
+        (set-window-point (get-buffer-window (current-buffer))
+                          (point-max))))
+
     (define-key smartparens-mode-map (kbd "M-<up>") nil)
     (define-key smartparens-mode-map (kbd "M-<down>") nil)
     (define-key elpy-mode-map (kbd "C-<right>") nil)
     (define-key elpy-mode-map (kbd "C-<left>") nil)
-
-    ;; (define-key sql-mode-map (kbd "C-c C-i") 'elpy-buffer-indent)
-    (defun elpy-buffer-indent ()
-      "Indent all buffer."
-      (interactive)
-      (indent-region (point-min) (point-max)))
 
     (define-key elpy-mode-map (kbd "C-c C-c") 'my/send-region-or-buffer)
     (defun my/send-region-or-buffer (&optional arg)
@@ -77,14 +76,15 @@
       (elpy-shell-send-region-or-buffer arg)
       (with-current-buffer (process-buffer (elpy-shell-get-or-create-process))
         (set-window-point (get-buffer-window (current-buffer))
-                          (point-max))))))
+                          (point-max))))
+    (setq elpy-rpc-timeout nil)))
 
 
-(use-package real-auto-save
-  :init
-  (progn
-    (add-hook 'prog-mode-hook 'real-auto-save-mode)
-    (setq real-auto-save-interval 4)))
+;; (use-package real-auto-save
+;;   :init
+;;   (progn
+;;     (add-hook 'prog-mode-hook 'real-auto-save-mode)
+;;     (setq real-auto-save-interval 4)))
 
 
 (use-package multiple-cursors
@@ -148,8 +148,6 @@
     (setq web-mode-enable-auto-pairing t)
     (setq web-mode-enable-auto-expanding t)
     (setq web-mode-enable-css-colorization t)
-
-    ;; (set-face-attribute 'web-mode-css-rule-face nil :foreground "Pink3")
 
     (set (make-local-variable 'company-backends) '(company-css))
 
@@ -337,12 +335,6 @@
               "#dgplug")
              :nickserv-password ,freenode-password)))
     (setq circe-reduce-lurker-spam t)))
-
-
-;; (use-package auto-complete-rst
-;;   :init
-;;   ;; (auto-complete-rst-init)
-;;   (eval-after-load "rst" '(auto-complete-rst-init)))
 
 
 ;; (use-package wakatime-mode
