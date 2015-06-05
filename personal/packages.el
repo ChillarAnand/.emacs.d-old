@@ -8,14 +8,12 @@
 ;;; Code:
 
 
-(prelude-require-packages '(use-package helm-swoop multiple-cursors
-                             delight company header2
-                             web-mode sqlup-mode company-quickhelp
-                             perspective nyan-mode magit sx smartparens
-                             edit-server paredit guide-key helm-descbinds
-                             multi-term free-keys helm electric-case
-                             helm-github-stars auto-package-update
-                             smart-mode-line circe pony-mode))
+(prelude-require-packages 
+ '(use-package helm-swoop multiple-cursors delight company header2 web-mode 
+    sqlup-mode company-quickhelp perspective nyan-mode magit sx smartparens
+    edit-server paredit guide-key helm-descbinds multi-term free-keys helm 
+    electric-case helm-github-stars auto-package-update smart-mode-line circe
+    pony-mode highlight-symbol))
 
 
 (require 'use-package)
@@ -54,9 +52,6 @@
     (defalias 'workon 'pyvenv-workon)
     (setq elpy-test-runner 'elpy-test-pytest-runner)
 
-    (require 'smartparens-config)
-    (turn-on-smartparens-strict-mode)
-
     (define-key elpy-mode-map (kbd "C-c C-c") 'my/send-region-or-buffer)
     (defun my/send-region-or-buffer (&optional arg)
       (interactive "P")
@@ -65,19 +60,12 @@
         (set-window-point (get-buffer-window (current-buffer))
                           (point-max))))
 
-    (define-key smartparens-mode-map (kbd "M-<up>") nil)
-    (define-key smartparens-mode-map (kbd "M-<down>") nil)
     (define-key elpy-mode-map (kbd "C-<right>") nil)
     (define-key elpy-mode-map (kbd "C-<left>") nil)
-
     (define-key elpy-mode-map (kbd "C-c C-c") 'my/send-region-or-buffer)
-    (defun my/send-region-or-buffer (&optional arg)
-      (interactive "P")
-      (elpy-shell-send-region-or-buffer arg)
-      (with-current-buffer (process-buffer (elpy-shell-get-or-create-process))
-        (set-window-point (get-buffer-window (current-buffer))
-                          (point-max))))
-    (setq elpy-rpc-timeout nil)))
+
+    (setq elpy-rpc-timeout nil)
+    (append grep-find-ignored-files "flycheck_*")))
 
 
 ;; (use-package real-auto-save

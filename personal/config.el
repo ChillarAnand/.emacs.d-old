@@ -204,8 +204,6 @@ interval: %S"  real-auto-save-timer  real-auto-save-buffers-list real-auto-save-
   (message "%s" point))
 
 
-(append grep-find-ignored-files "flycheck_*")
-
 (provide 'config)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; config.el ends here
