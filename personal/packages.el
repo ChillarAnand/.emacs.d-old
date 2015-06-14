@@ -8,12 +8,12 @@
 ;;; Code:
 
 
-(prelude-require-packages 
- '(use-package helm-swoop multiple-cursors delight company header2 web-mode 
+(prelude-require-packages
+ '(use-package helm-swoop multiple-cursors delight company header2 web-mode
     sqlup-mode company-quickhelp perspective nyan-mode magit sx smartparens
-    edit-server paredit guide-key helm-descbinds multi-term free-keys helm 
+    edit-server paredit guide-key helm-descbinds multi-term free-keys helm
     electric-case helm-github-stars auto-package-update smart-mode-line circe
-    pony-mode highlight-symbol))
+    pony-mode highlight-symbol comment-dwim-2))
 
 
 (require 'use-package)
@@ -27,13 +27,13 @@
 ;;     (defun strict-smartparens ()
 ;;       (turn-on-smartparens-strict-mode))
 ;;     (add-hook 'prog-mode-hook 'strict-smartparens)
-;;     (define-key smartparens-mode-map (kbd "C-<right>") #'sp-forward-slurp-sexp)))
+;;     (define-key smartparens-mode-map (kbd "C-<right>") #'sp-forward-slurp-exp)))
 
 
-(use-package paredit-everywhere
-  :init
-  (progn
-    (add-hook 'prog-mode-hook 'paredit-everywhere-mode)))
+;;(use-package paredit-everywhere
+;;  :init
+;;  (progn
+;;    (add-hook 'prog-mode-hook 'paredit-everywhere-mode)))
 
 
 (add-to-list 'load-path "~/projects/lisp/elpy")
@@ -229,11 +229,13 @@
 (use-package guide-key
   :init
   (progn
+    (setq guide-key/idle-delay 0.5)
+    (setq guide-key/popup-window-position 'bottom)
     (setq guide-key/guide-key-sequence
           '("C" "ESC"
             "C-c" "C-h" "C-x"
             "C-c p" "C-x r"
-            "C-c C-e" "C-c C-t" "C-c C-p"
+            "C-c C-e" "C-c C-t" "C-c C-p" "C-c C-l"
             "C-c C-p g"))
     (guide-key-mode 1)))
 
@@ -350,6 +352,43 @@
 (use-package comment-dwim-2
   :init
   (global-set-key (kbd "M-;") 'comment-dwim-2))
+
+(use-package openwith
+  :init
+  (progn 
+    (openwith-mode t)
+    (setq large-file-warning-threshold 500000000)
+    (setq openwith-associations
+          (list (list (openwith-make-extension-regexp '("pdf"))
+                      "evince" '(file))
+                (list (openwith-make-extension-regexp '("flac" "mp3" "wav"))
+                      "vlc" '(file))
+                (list (openwith-make-extension-regexp 
+                       '("avi" "flv" "mov" "mp4" "mkv" "mpeg" "mpg" "ogg" "wmv"))
+                      "vlc" '(file))
+                (list (openwith-make-extension-regexp '("bmp" "jpeg" "jpg" "png"))
+                      "ristretto" '(file))
+                (list (openwith-make-extension-regexp '("doc" "docx" "odt"))
+                      "libreoffice" '("--writer" file))
+                (list (openwith-make-extension-regexp '("ods" "xls" "xlsx"))
+                      "libreoffice" '("--calc" file))
+                (list (openwith-make-extension-regexp '("odp" "pps" "ppt" "pptx"))
+                      "libreoffice" '("--impress" file))
+                ))))
+
+
+(require 'helm)
+
+(use-package helm
+  :init
+  (progn
+    ;; (defun append-recentd-helm ()    message "foo")
+    ;;(add-function :before (append-recentd-helm proc) #'helm-mini)
+    ;;(advice-add 'helm-mini :around #'append-recentd-helm)
+    (require 'helm-files)
+    (unless helm-source-buffers-list
+      (setq helm-source-buffers-list
+            (helm-make-source "Buffers" 'helm-source-buffers)))))
 
 
 (provide 'packages)
