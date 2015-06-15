@@ -372,6 +372,9 @@
   (global-set-key (kbd "M-;") 'comment-dwim-2))
 
 
+(global-set-key (kbd "C-s") 'phi-search)
+
+
 (provide 'packages)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; packages.el ends here

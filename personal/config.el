@@ -46,9 +46,7 @@
   (beginning-of-line (or (and arg (1+ arg)) 2))
   (if (and arg (not (= 1 arg))) (message "%d lines copied" arg)))
 
-
 (semantic-mode 1)
-
 
 (global-set-key (kbd "M-,") 'pop-tag-mark)
 
@@ -60,14 +58,13 @@
 (require 'ox-reveal)
 (require 'htmlize)
 
-
-
+(set-language-environment "UTF-8")
 
 ;; activate space to ctrl on start
 (defun space-to-ctrl-start ()
-"Activate space to ctrl programme."
-    (interactive)
-    (shell-command "~/projects/Space2Ctrl/s2cctl start"))
+  "Activate space to ctrl programme."
+  (interactive)
+  (shell-command "~/projects/Space2Ctrl/s2cctl start"))
 
 (defun space-to-ctrl-stop ()
   "Deactivate space to ctrl programme."
@@ -116,6 +113,50 @@ pyvenv-virtualenvwrapper-python: %s"
            (getenv "pyvenv-virtualenvwrapper-python")
            ))
 
+
+(defun reselect-last-region ()
+  (interactive)
+  (let ((start (mark t))
+        (end (point)))
+    (goto-char start)
+    (call-interactively' set-mark-command)
+    (goto-char end)))
+(global-set-key (kbd "C-'") 'reselect-last-region)
+
+(defun print-region-point ()
+  (interactive)
+  (if (use-region-p)
+      (progn
+        (message "b: %s, e: %s, p: %s" (region-beginning) (region-end) (point))
+        (let ((beg (region-beginning))
+              (end (region-end)))
+          (while (< (point) end)
+            (message ":: %s - %s " (point-at-bol) (point-at-eol))
+            (forward-line 1)))
+        (setq deactivate-mark nil))))
+
+(defun print-point ()
+  (interactive)
+  (message "%s" point))
+
+
+;; (defadvice isearch-search (after isearch-no-fail activate)
+;;   "Automatically wrapping I-search"
+;;   (unless isearch-success
+;;     (ad-disable-advice 'isearch-search 'after 'isearch-no-fail)
+;;     (ad-activate 'isearch-search)
+;;     (isearch-repeat (if isearch-forward 'forward))
+;;     (ad-enable-advice 'isearch-search 'after 'isearch-no-fail)
+;;     (ad-activate 'isearch-search)))
+
+;; (defun isearch-auto-wrap ()
+;;   (unless isearch-success
+;;     (isearch-repeat (if isearch-forward 'forward))
+    
+;;     )
+;;   )
+;; (advice-add 'isearch-forward :after #'isearch-auto-wrap)
+
 (defun ras-info ()
   "Show  env variables."
   (interactive)
@@ -137,32 +178,6 @@ interval: %S"  real-auto-save-timer  real-auto-save-alist real-auto-save-interva
 
 ;; (defun real-auto-save-info ()
 ;;   "Show real-auto-save variables list.")
-
-(bind-key "C-'" 'reselect-last-region)
-
-(defun reselect-last-region ()
-  (interactive)
-  (let ((start (mark t))
-        (end (point)))
-    (goto-char start)
-    (call-interactively' set-mark-command)
-    (goto-char end)))
-
-(defun print-region-point ()
-  (interactive)
-  (if (use-region-p)
-      (progn 
-        (message "b: %s, e: %s, p: %s" (region-beginning) (region-end) (point))
-        (let ((beg (region-beginning))
-              (end (region-end)))
-          (while (< (point) end)
-            (message ":: %s - %s " (point-at-bol) (point-at-eol))
-            (forward-line 1)))
-        (setq deactivate-mark nil))))
-
-(defun print-point ()
-  (interactive)
-  (message "%s" point))
 
 
 

@@ -19,5 +19,14 @@
 (scroll-bar-mode -1)
 
 
+;; colors
+;;(set-background-color "#f1f1f1")
+;;(set-background-color "#eeeeee")
+;;(add-to-list 'default-frame-alist '(foreground-color . "#E0DFDB"))
+(add-to-list 'default-frame-alist '(background-color . "#f1f1f1"))
+(add-to-list 'default-frame-alist '(background-color . "#eeeeee"))
+
+
+
 (provide 'ui)
 ;;; ui.el ends here
