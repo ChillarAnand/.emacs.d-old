@@ -64,7 +64,7 @@
 (key-chord-define-global "uu" 'undo-tree-visualize)
 (key-chord-define-global "xx" 'execute-extended-command)
 (key-chord-define-global "dd" 'prelude-kill-whole-line)
-(key-chord-define-global "md" 'helm-dired-history-view)
+(key-chord-define-global "md" 'helm-dired-recent-dirs-view)
 (key-chord-define-global "yy" 'copy-line)
 
 

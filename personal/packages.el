@@ -13,7 +13,7 @@
     sqlup-mode company-quickhelp perspective nyan-mode magit sx smartparens
     edit-server paredit guide-key helm-descbinds multi-term free-keys helm
     electric-case helm-github-stars auto-package-update smart-mode-line circe
-    pony-mode highlight-symbol comment-dwim-2 openwith))
+    pony-mode highlight-symbol comment-dwim-2 openwith aggressive-indent))
 
 
 (require 'use-package)
@@ -370,23 +370,24 @@
                 ))))
 
 
-(require 'helm)
+(use-package helm-dired-recent-dirs)
 
 (use-package helm
   :init
   (progn
-    ;; (defun append-recentd-helm ()    message "foo")
-    ;;(add-function :before (append-recentd-helm proc) #'helm-mini)
-    ;;(advice-add 'helm-mini :around #'append-recentd-helm)
-    (require 'helm-files)
-    (unless helm-source-buffers-list
-      (setq helm-source-buffers-list
-            (helm-make-source "Buffers" 'helm-source-buffers)))))
+    (setq helm-mini-default-sources '(helm-source-buffers-list
+                                      helm-source-recentf
+                                      helm-source-dired-recent-dirs
+                                      helm-source-buffer-not-found))))
 
 (use-package phi-search
   :init
   (global-set-key (kbd "C-s") 'phi-search))
 
+
+(use-package aggressive-indent
+  :init
+  (global-aggressive-indent-mode 1))
 
 (provide 'packages)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
