@@ -13,27 +13,20 @@
     sqlup-mode company-quickhelp perspective nyan-mode magit sx smartparens
     edit-server paredit guide-key helm-descbinds multi-term free-keys helm
     electric-case helm-github-stars auto-package-update smart-mode-line circe
-    pony-mode highlight-symbol comment-dwim-2))
+    pony-mode highlight-symbol comment-dwim-2 openwith))
 
 
 (require 'use-package)
 
 
-;; (use-package smartparens
-;;   :init
-;;   (progn
-;;     (require 'smartparens-config)
-;;     (smartparens-global-mode 1)
-;;     (defun strict-smartparens ()
-;;       (turn-on-smartparens-strict-mode))
-;;     (add-hook 'prog-mode-hook 'strict-smartparens)
-;;     (define-key smartparens-mode-map (kbd "C-<right>") #'sp-forward-slurp-exp)))
-
-
-;;(use-package paredit-everywhere
-;;  :init
-;;  (progn
-;;    (add-hook 'prog-mode-hook 'paredit-everywhere-mode)))
+(use-package smartparens
+  :init
+  (progn
+    (require 'smartparens-config)
+    (smartparens-global-mode 1)
+    (defun strict-smartparens ()
+      (turn-on-smartparens-strict-mode))
+    (add-hook 'prog-mode-hook 'strict-smartparens)))
 
 
 (add-to-list 'load-path "~/projects/lisp/elpy")
@@ -341,9 +334,9 @@
 (use-package highlight-symbol
   :init
   (progn 
-    (global-set-key [(control f3)] 'highlight-symbol)
     (global-set-key [f3] 'highlight-symbol-next)
     (global-set-key [(shift f3)] 'highlight-symbol-prev)
+    (global-set-key [(control f3)] 'highlight-symbol)
     (global-set-key [(meta f3)] 'highlight-symbol-query-replace)
     (highlight-symbol-mode 1)
     (highlight-symbol-nav-mode 1)))
@@ -390,8 +383,9 @@
       (setq helm-source-buffers-list
             (helm-make-source "Buffers" 'helm-source-buffers)))))
 
-
-(global-set-key (kbd "C-s") 'phi-search)
+(use-package phi-search
+  :init
+  (global-set-key (kbd "C-s") 'phi-search))
 
 
 (provide 'packages)
