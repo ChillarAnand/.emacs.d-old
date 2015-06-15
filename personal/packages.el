@@ -9,16 +9,11 @@
 
 
 (prelude-require-packages
- '(use-package helm-swoop multiple-cursors
-    delight company header2 real-auto-save
-    web-mode sqlup-mode company-quickhelp
-    perspective nyan-mode magit sx smartparens
-    edit-server paredit guide-key helm-descbinds
-    multi-term free-keys helm electric-case
-    helm-github-stars auto-package-update
-    smart-mode-line circe paredit-everywhere
-    skewer-mode simple-httpd js2-mode impatient-mode
-    pony-mode))
+ '(use-package helm-swoop multiple-cursors delight company header2 web-mode
+    sqlup-mode company-quickhelp perspective nyan-mode magit sx smartparens
+    edit-server paredit guide-key helm-descbinds multi-term free-keys helm
+    electric-case helm-github-stars auto-package-update smart-mode-line circe
+    pony-mode highlight-symbol comment-dwim-2))
 
 
 (require 'use-package)
@@ -32,18 +27,18 @@
 ;;     (defun strict-smartparens ()
 ;;       (turn-on-smartparens-strict-mode))
 ;;     (add-hook 'prog-mode-hook 'strict-smartparens)
-;;     (define-key smartparens-mode-map (kbd "C-<right>") #'sp-forward-slurp-sexp)))
+;;     (define-key smartparens-mode-map (kbd "C-<right>") #'sp-forward-slurp-exp)))
 
 
-(use-package paredit-everywhere
-  :init
-  (progn
-    (add-hook 'prog-mode-hook 'paredit-everywhere-mode)))
+;;(use-package paredit-everywhere
+;;  :init
+;;  (progn
+;;    (add-hook 'prog-mode-hook 'paredit-everywhere-mode)))
+
 
 (add-to-list 'load-path "~/projects/lisp/elpy")
 (load "elpy" nil t)
 (elpy-enable)
-
 (use-package elpy
   :init
   (progn
@@ -57,34 +52,27 @@
     (defalias 'workon 'pyvenv-workon)
     (setq elpy-test-runner 'elpy-test-pytest-runner)
 
-    (require 'smartparens-config)
-    (turn-on-smartparens-strict-mode)
-
-    (define-key smartparens-mode-map (kbd "M-<up>") nil)
-    (define-key smartparens-mode-map (kbd "M-<down>") nil)
-    (define-key elpy-mode-map (kbd "C-<right>") nil)
-    (define-key elpy-mode-map (kbd "C-<left>") nil)
-
-    ;; (define-key sql-mode-map (kbd "C-c C-i") 'elpy-buffer-indent)
-    (defun elpy-buffer-indent ()
-      "Indent all buffer."
-      (interactive)
-      (indent-region (point-min) (point-max)))
-
     (define-key elpy-mode-map (kbd "C-c C-c") 'my/send-region-or-buffer)
     (defun my/send-region-or-buffer (&optional arg)
       (interactive "P")
       (elpy-shell-send-region-or-buffer arg)
       (with-current-buffer (process-buffer (elpy-shell-get-or-create-process))
         (set-window-point (get-buffer-window (current-buffer))
-                          (point-max))))))
+                          (point-max))))
+
+    (define-key elpy-mode-map (kbd "C-<right>") nil)
+    (define-key elpy-mode-map (kbd "C-<left>") nil)
+    (define-key elpy-mode-map (kbd "C-c C-c") 'my/send-region-or-buffer)
+
+    (setq elpy-rpc-timeout nil)
+    (append grep-find-ignored-files "flycheck_*")))
 
 
-(use-package real-auto-save
-  :init
-  (progn
-    (add-hook 'prog-mode-hook 'real-auto-save-mode)
-    (setq real-auto-save-interval 4)))
+;; (use-package real-auto-save
+;;   :init
+;;   (progn
+;;     (add-hook 'prog-mode-hook 'real-auto-save-mode)
+;;     (setq real-auto-save-interval 4)))
 
 
 (use-package multiple-cursors
@@ -148,8 +136,6 @@
     (setq web-mode-enable-auto-pairing t)
     (setq web-mode-enable-auto-expanding t)
     (setq web-mode-enable-css-colorization t)
-
-    ;; (set-face-attribute 'web-mode-css-rule-face nil :foreground "Pink3")
 
     (set (make-local-variable 'company-backends) '(company-css))
 
@@ -243,11 +229,13 @@
 (use-package guide-key
   :init
   (progn
+    (setq guide-key/idle-delay 0.5)
+    (setq guide-key/popup-window-position 'bottom)
     (setq guide-key/guide-key-sequence
           '("C" "ESC"
             "C-c" "C-h" "C-x"
             "C-c p" "C-x r"
-            "C-c C-e" "C-c C-t" "C-c C-p"
+            "C-c C-e" "C-c C-t" "C-c C-p" "C-c C-l"
             "C-c C-p g"))
     (guide-key-mode 1)))
 
@@ -339,12 +327,6 @@
     (setq circe-reduce-lurker-spam t)))
 
 
-;; (use-package auto-complete-rst
-;;   :init
-;;   ;; (auto-complete-rst-init)
-;;   (eval-after-load "rst" '(auto-complete-rst-init)))
-
-
 ;; (use-package wakatime-mode
 ;;   :init
 ;;   (global-wakatime-mode))
@@ -370,6 +352,43 @@
 (use-package comment-dwim-2
   :init
   (global-set-key (kbd "M-;") 'comment-dwim-2))
+
+(use-package openwith
+  :init
+  (progn 
+    (openwith-mode t)
+    (setq large-file-warning-threshold 500000000)
+    (setq openwith-associations
+          (list (list (openwith-make-extension-regexp '("pdf"))
+                      "evince" '(file))
+                (list (openwith-make-extension-regexp '("flac" "mp3" "wav"))
+                      "vlc" '(file))
+                (list (openwith-make-extension-regexp 
+                       '("avi" "flv" "mov" "mp4" "mkv" "mpeg" "mpg" "ogg" "wmv"))
+                      "vlc" '(file))
+                (list (openwith-make-extension-regexp '("bmp" "jpeg" "jpg" "png"))
+                      "ristretto" '(file))
+                (list (openwith-make-extension-regexp '("doc" "docx" "odt"))
+                      "libreoffice" '("--writer" file))
+                (list (openwith-make-extension-regexp '("ods" "xls" "xlsx"))
+                      "libreoffice" '("--calc" file))
+                (list (openwith-make-extension-regexp '("odp" "pps" "ppt" "pptx"))
+                      "libreoffice" '("--impress" file))
+                ))))
+
+
+(require 'helm)
+
+(use-package helm
+  :init
+  (progn
+    ;; (defun append-recentd-helm ()    message "foo")
+    ;;(add-function :before (append-recentd-helm proc) #'helm-mini)
+    ;;(advice-add 'helm-mini :around #'append-recentd-helm)
+    (require 'helm-files)
+    (unless helm-source-buffers-list
+      (setq helm-source-buffers-list
+            (helm-make-source "Buffers" 'helm-source-buffers)))))
 
 
 (global-set-key (kbd "C-s") 'phi-search)

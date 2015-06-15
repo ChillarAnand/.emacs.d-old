@@ -52,6 +52,7 @@
 
 
 ;; org reveal
+
 (load-file "~/.emacs.d/vendor/ox-reveal.el")
 (load-file "~/.emacs.d/vendor/htmlize.el")
 (setq org-reveal-root "file:///home/anand/.emacs.d/vendor/reveal.js/js/reveal.js")
@@ -110,9 +111,60 @@ pyvenv-virtualenvwrapper-python: %s"
            (getenv "VIRTUALENVWRAPPER_HOOK_DIR")
            (getenv "DJANGO_SETTINGS_MODULE")
            (getenv "VIRTUAL_ENV")
-           (getenv "pyvenv-virtualenvwrapper-python")
-           ))
+           (getenv "pyvenv-virtualenvwrapper-python")))
 
+
+(defun ras-info ()
+  "Show  env variables."
+  (interactive)
+  (message "timer: %S
+buffers: %S
+interval: %S"  real-auto-save-timer  real-auto-save-buffers-list real-auto-save-interval))
+
+
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((python . t) (sh . t)))
+
+
+;; (defun message-beat ()
+;;   (message "re")  )
+
+;; (setq real-auto-save-timer
+;;       (run-at-time
+;;        (current-time) 2 'message-beat))
+
+;; (cancel-timer message-beat)
+
+;; (message "timer list: %S" timer-list)
+
+
+;; (defun real-auto-save-info ()
+;;   "Show real-auto-save variables list.")
+(add-hook 'evil-mode-hook 'evil-mode-bindings)
+
+    (defun evil-mode-bindings ()
+      "Bind symbols to digits."
+      (define-key key-translation-map (kbd "!") "1")
+      (define-key key-translation-map (kbd "@") (kbd "2"))
+      (define-key key-translation-map (kbd "#") (kbd "3"))
+      (define-key key-translation-map (kbd "$") (kbd "4"))
+      (define-key key-translation-map (kbd "%") "5")
+      (define-key key-translation-map (kbd "^") (kbd "6"))
+      (define-key key-translation-map (kbd "&") (kbd "7"))
+      (define-key key-translation-map (kbd "*") (kbd "8"))
+      (define-key key-translation-map (kbd "(") (kbd "9"))
+      (define-key key-translation-map (kbd ")") (kbd "0")))
+
+
+
+;;(define-key evil-normal-state-map "5" 'evil-beginning-of-line)
+
+
+
+
+
+(bind-key "C-'" 'reselect-last-region)
 
 (defun reselect-last-region ()
   (interactive)
@@ -178,7 +230,6 @@ interval: %S"  real-auto-save-timer  real-auto-save-alist real-auto-save-interva
 
 ;; (defun real-auto-save-info ()
 ;;   "Show real-auto-save variables list.")
-
 
 
 (provide 'config)
