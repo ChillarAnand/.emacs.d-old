@@ -13,7 +13,8 @@
     sqlup-mode company-quickhelp perspective nyan-mode magit sx smartparens
     edit-server paredit guide-key helm-descbinds multi-term free-keys helm
     electric-case helm-github-stars auto-package-update smart-mode-line circe
-    pony-mode highlight-symbol comment-dwim-2 openwith aggressive-indent))
+    pony-mode highlight-symbol comment-dwim-2 openwith aggressive-indent
+    helm-dired-recent-dirs google-translate slime ace-link))
 
 
 (require 'use-package)
@@ -388,6 +389,28 @@
 (use-package aggressive-indent
   :init
   (global-aggressive-indent-mode 1))
+
+
+(use-package google-translate
+  :init
+  (progn
+    (setq  google-translate-default-source-language "en")
+    (setq  google-translate-default-target-language "kn")
+    (require 'google-translate-default-ui)))
+
+
+(use-package slime
+  :init
+  (progn
+    (setq inferior-lisp-program "/usr/bin/sbcl")
+    (setq slime-contribs '(slime-fancy))
+    (add-to-list 'slime-contribs 'slime-repl)))
+
+
+(use-package ace-link
+  :init
+  (ace-link-setup-default))
+ 
 
 (provide 'packages)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
