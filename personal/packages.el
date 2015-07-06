@@ -14,7 +14,8 @@
     edit-server paredit guide-key helm-descbinds multi-term free-keys helm
     electric-case helm-github-stars auto-package-update smart-mode-line circe
     pony-mode highlight-symbol comment-dwim-2 openwith aggressive-indent
-    helm-dired-recent-dirs google-translate slime ace-link helm-chrome))
+    helm-dired-recent-dirs google-translate slime ace-link helm-chrome
+    writeroom-mode writegood-mode))
 
 
 (require 'use-package)
@@ -55,6 +56,7 @@
                           (point-max))))
 
     (define-key elpy-mode-map (kbd "C-<right>") nil)
+    (define-key elpy-mode-map (kbd "C-c C-o") nil)
     (define-key elpy-mode-map (kbd "C-<left>") nil)
     (define-key elpy-mode-map (kbd "C-c C-c") 'my/send-region-or-buffer)
 
@@ -62,11 +64,11 @@
     (append grep-find-ignored-files "flycheck_*")))
 
 
-;; (use-package real-auto-save
-;;   :init
-;;   (progn
-;;     (add-hook 'prog-mode-hook 'real-auto-save-mode)
-;;     (setq real-auto-save-interval 4)))
+(use-package real-auto-save
+  :init
+  (progn
+    (add-hook 'prog-mode-hook 'real-auto-save-mode)
+    (setq real-auto-save-interval 2)))
 
 
 (use-package multiple-cursors
@@ -243,15 +245,7 @@
     (bind-key "C-c C-p" 'multi-term-prev)))
 
 
-(use-package helm
-  :init
-  (progn
-    (bind-key "C-x r l" 'helm-bookmarks)))
-
-
-(use-package helm-swoop)
 (use-package free-keys)
-(use-package helm-descbinds)
 
 
 (use-package electric-case
@@ -287,9 +281,7 @@
     (setq electric-case-convert-calls t)))
 
 
-(use-package helm-github-stars
-  :init
-  (setq helm-github-stars-username "chillaranand"))
+
 
 
 ;; (use-package auto-package-update
@@ -334,7 +326,7 @@
 
 (use-package highlight-symbol
   :init
-  (progn 
+  (progn
     (global-set-key [f3] 'highlight-symbol-next)
     (global-set-key [(shift f3)] 'highlight-symbol-prev)
     (global-set-key [(control f3)] 'highlight-symbol)
@@ -349,7 +341,7 @@
 
 (use-package openwith
   :init
-  (progn 
+  (progn
     (openwith-mode t)
     (setq large-file-warning-threshold 500000000)
     (setq openwith-associations
@@ -357,7 +349,7 @@
                       "evince" '(file))
                 (list (openwith-make-extension-regexp '("flac" "mp3" "wav"))
                       "vlc" '(file))
-                (list (openwith-make-extension-regexp 
+                (list (openwith-make-extension-regexp
                        '("avi" "flv" "mov" "mp4" "mkv" "mpeg" "mpg" "ogg" "wmv"))
                       "vlc" '(file))
                 (list (openwith-make-extension-regexp '("bmp" "jpeg" "jpg" "png"))
@@ -373,18 +365,51 @@
 
 (use-package helm-dired-recent-dirs)
 (use-package helm-chrome)
+(use-package helm-swoop)
+(use-package helm-descbinds)
 
 (use-package helm
   :init
   (progn
+    (bind-key "C-x r l" 'helm-bookmarks)
+
+    (defvar helm-source-emacs-commands
+      (helm-build-sync-source "Emacs commands"
+        :candidates (lambda ()
+                      (let ((cmds))
+                        (mapatoms
+                         (lambda (elt) (when (commandp elt) (push elt cmds))))
+                        cmds))
+        :coerce #'intern-soft
+        :action #'command-execute)
+      "A simple helm source for Emacs commands.")
+
+    (defvar helm-source-emacs-commands-history
+      (helm-build-sync-source "Emacs commands history"
+        :candidates (lambda ()
+                      (let ((cmds))
+                        (dolist (elem extended-command-history)
+                          (push (intern elem) cmds))
+                        cmds))
+        :coerce #'intern-soft
+        :action #'command-execute)
+      "Emacs commands history")
+
     (setq helm-mini-default-sources '(helm-source-buffers-list
                                       helm-source-recentf
                                       helm-source-dired-recent-dirs
+                                      helm-source-emacs-commands-history
+                                      helm-source-emacs-commands
                                       helm-chrome-source
                                       hgs/helm-c-source-stars
                                       hgs/helm-c-source-repos
-                                      hgs/helm-c-source-search
-                                      helm-source-buffer-not-found))))
+                                      helm-source-buffer-not-found
+                                      hgs/helm-c-source-search))))
+
+(use-package helm-github-stars
+  :init
+  (setq helm-github-stars-username "chillaranand"))
+
 
 (use-package phi-search
   :init
@@ -415,7 +440,31 @@
 (use-package ace-link
   :init
   (ace-link-setup-default))
- 
+
+(require 'company)
+(require 'company-web-html)
+(add-to-list 'company-backends 'company-web-html)
+
+(define-key web-mode-map (kbd "C-'") 'company-web-html)
+(add-hook 'web-mode-hook (lambda ()
+                           (set (make-local-variable 'company-backends) '(company-web-html company-files))
+                           (company-mode t)))
+
+
+(use-package writegood)
+
+(use-package writeroom)
+
+
+;; (require 'emmet-mode)
+;; (add-hook 'sgml-mode-hook 'emmet-mode)
+;; (add-hook 'html-mode-hook 'emmet-mode)
+;; (add-hook 'css-mode-hook  'emmet-mode)
+
+;; (use-package zencoding-mode)
+;; (add-hook 'html-mode-hook 'zencoding-mode)
+
+
 
 (provide 'packages)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

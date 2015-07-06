@@ -23,6 +23,10 @@
 
 (add-hook 'python-mode-hook (turn-on-smartparens-strict-mode))
 
+(defun current-dired ()
+  (interactive)
+  (dired "."))
+
 ;; copy line
 (defun copy-line (arg)
   "Copy lines (as many as prefix argument) in the kill ring.
@@ -204,17 +208,10 @@ interval: %S"  real-auto-save-timer  real-auto-save-buffers-list real-auto-save-
 ;; (defun isearch-auto-wrap ()
 ;;   (unless isearch-success
 ;;     (isearch-repeat (if isearch-forward 'forward))
-    
+
 ;;     )
 ;;   )
 ;; (advice-add 'isearch-forward :after #'isearch-auto-wrap)
-
-(defun ras-info ()
-  "Show  env variables."
-  (interactive)
-  (message "timer: %S
-buffers: %S
-interval: %S"  real-auto-save-timer  real-auto-save-alist real-auto-save-interval))
 
 ;; (defun message-beat ()
 ;;   (message "re")  )

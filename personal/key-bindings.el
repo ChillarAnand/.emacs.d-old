@@ -8,8 +8,19 @@
 
 ;;; Code:
 
+;; unbind-keys
+(define-key comint-mode-map (kbd "C-c C-o") nil)
+
+
+(global-set-key (kbd "C-c C-b") 'prelude-switch-to-previous-buffer)
+(global-set-key (kbd "C-c C-o") 'other-window)
+(global-set-key (kbd "C-c C-f") 'helm-projectile-find-file)
 (global-set-key (kbd "C-c C-v") 'eval-buffer)
+(global-set-key (kbd "C-c C-g") 'beginning-of-buffer)
+
 (global-set-key (kbd "C-h C-m") 'discover-my-major)
+
+(global-set-key (kbd "C-x C-d") 'current-dired)
 
 (global-set-key (kbd "C-?") 'help-command)
 (global-set-key (kbd "M-?") 'mark-paragraph)
@@ -23,7 +34,6 @@
 
 (require 'key-chord)
 
-(key-chord-define-global "gg" 'beginning-of-buffer)
 (key-chord-define-global "GG" 'end-of-buffer)
 
 (key-chord-define-global "ps" 'helm-projectile-switch-project)
@@ -45,8 +55,6 @@
 (key-chord-define-global "x0" 'delete-window)
 (key-chord-define-global "kw" 'delete-window)
 (key-chord-define-global "kk" 'delete-other-windows)
-(key-chord-define-global "xo" 'other-window)
-(key-chord-define-global "bb" 'prelude-switch-to-previous-buffer)
 
 (key-chord-define-global "dk" 'describe-key)
 (key-chord-define-global "dv" 'describe-variable)
