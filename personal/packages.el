@@ -15,10 +15,14 @@
     electric-case helm-github-stars auto-package-update smart-mode-line circe
     pony-mode highlight-symbol comment-dwim-2 openwith aggressive-indent
     helm-dired-recent-dirs google-translate slime ace-link helm-chrome
-    writeroom-mode writegood-mode))
+    writeroom-mode writegood-mode phi-search))
+
 
 
 (require 'use-package)
+
+;; (load-file "~/projects/lisp/impatient-markup/impatient-markup.el")
+;; (impatient-markup-enable)
 
 
 (use-package smartparens
@@ -26,6 +30,7 @@
   (progn
     (require 'smartparens-config)
     (smartparens-global-mode 1)
+    (sp-pair "`" "`" :wrap "C-`")
     (defun strict-smartparens ()
       (turn-on-smartparens-strict-mode))
     (add-hook 'prog-mode-hook 'strict-smartparens)))
@@ -64,11 +69,9 @@
     (append grep-find-ignored-files "flycheck_*")))
 
 
-(use-package real-auto-save
-  :init
-  (progn
-    (add-hook 'prog-mode-hook 'real-auto-save-mode)
-    (setq real-auto-save-interval 2)))
+(load-file "/home/anand/projects/lisp/real-auto-save/real-auto-save.el")
+(add-hook 'prog-mode-hook 'real-auto-save-mode)
+(setq real-auto-save-interval 4)
 
 
 (use-package multiple-cursors
@@ -281,16 +284,6 @@
     (setq electric-case-convert-calls t)))
 
 
-
-
-
-;; (use-package auto-package-update
-;;   :init
-;;   (progn
-;;     (auto-package-update-maybe)
-;;     (setq auto-package-update-interval 30)))
-
-
 (use-package smart-mode-line
   :init
   (progn
@@ -464,6 +457,23 @@
 ;; (use-package zencoding-mode)
 ;; (add-hook 'html-mode-hook 'zencoding-mode)
 
+
+(use-package elisp-slime-nav
+  :init
+  (progn
+    (dolist (hook '(emacs-lisp-mode-hook ielm-mode-hook))
+      (add-hook hook 'turn-on-elisp-slime-nav-mode))
+    (global-set-key (kbd "C-c C-d") 'elisp-slime-nav-describe-elisp-thing-at-point)))
+
+
+(autoload 'auto-capitalize-mode "auto-capitalize"
+  "Toggle `auto-capitalize' minor mode in this buffer." t)
+(autoload 'turn-on-auto-capitalize-mode "auto-capitalize"
+  "Turn on `auto-capitalize' minor mode in this buffer." t)
+(autoload 'enable-auto-capitalize-mode "auto-capitalize"
+  "Enable `auto-capitalize' minor mode in this buffer." t)
+
+(require 'markdown-mode)
 
 
 (provide 'packages)
