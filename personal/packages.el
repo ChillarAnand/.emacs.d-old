@@ -15,7 +15,7 @@
     electric-case helm-github-stars auto-package-update smart-mode-line circe
     pony-mode highlight-symbol comment-dwim-2 openwith aggressive-indent
     helm-dired-recent-dirs google-translate slime ace-link helm-chrome
-    writeroom-mode writegood-mode))
+    writeroom-mode writegood-mode benchmark-init))
 
 
 (require 'use-package)
@@ -368,6 +368,10 @@
 (use-package helm-swoop)
 (use-package helm-descbinds)
 
+(use-package helm-github-stars
+  :init
+  (setq helm-github-stars-username "chillaranand"))
+
 (use-package helm
   :init
   (progn
@@ -405,11 +409,6 @@
                                       hgs/helm-c-source-repos
                                       helm-source-buffer-not-found
                                       hgs/helm-c-source-search))))
-
-(use-package helm-github-stars
-  :init
-  (setq helm-github-stars-username "chillaranand"))
-
 
 (use-package phi-search
   :init
@@ -455,6 +454,8 @@
 
 (use-package writeroom)
 
+(use-package sotlisp)
+
 
 ;; (require 'emmet-mode)
 ;; (add-hook 'sgml-mode-hook 'emmet-mode)
@@ -464,6 +465,9 @@
 ;; (use-package zencoding-mode)
 ;; (add-hook 'html-mode-hook 'zencoding-mode)
 
+(use-package benchmark-init
+  :init
+  (benchmark-init/activate))
 
 
 (provide 'packages)
