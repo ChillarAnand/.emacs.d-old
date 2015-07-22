@@ -68,7 +68,7 @@
     (append grep-find-ignored-files "flycheck_*")))
 
 
-(load-file "/home/anand/projects/lisp/real-auto-save/real-auto-save.el")
+(load-file "~/projects/lisp/real-auto-save/real-auto-save.el")
 (add-hook 'prog-mode-hook 'real-auto-save-mode)
 (setq real-auto-save-interval 4)
 
@@ -233,7 +233,7 @@
           '("C" "ESC"
             "C-c" "C-h" "C-x"
             "C-c p" "C-x r"
-            "C-c C-e" "C-c C-t" "C-c C-p" "C-c C-l"
+            "C-c C-b"  "C-c C-e" "C-c C-t" "C-c C-p" "C-c C-l"
             "C-c C-p g"))
     (guide-key-mode 1)))
 
@@ -420,12 +420,12 @@
     (require 'google-translate-default-ui)))
 
 
-(use-package slime
-  :init
-  (progn
-    (setq inferior-lisp-program "/usr/bin/sbcl")
-    (setq slime-contribs '(slime-fancy))
-    (add-to-list 'slime-contribs 'slime-repl)))
+;; (use-package slime
+;;   :init
+;;   (progn
+;;     (setq inferior-lisp-program "/usr/bin/sbcl")
+;;     (setq slime-contribs '(slime-fancy))
+;;     (add-to-list 'slime-contribs 'slime-repl)))
 
 
 (use-package ace-link
@@ -461,12 +461,12 @@
   :init
   (benchmark-init/activate))
 
-(use-package elisp-slime-nav
-  :init
-  (progn
-    (dolist (hook '(emacs-lisp-mode-hook ielm-mode-hook))
-      (add-hook hook 'turn-on-elisp-slime-nav-mode))
-    (global-set-key (kbd "C-c C-d") 'elisp-slime-nav-describe-elisp-thing-at-point)))
+;; (use-package elisp-slime-nav
+;;   :init
+;;   (progn
+;;     (dolist (hook '(emacs-lisp-mode-hook ielm-mode-hook))
+;;       (add-hook hook 'turn-on-elisp-slime-nav-mode))
+;;     (global-set-key (kbd "C-c C-d") 'elisp-slime-nav-describe-elisp-thing-at-point)))
 
 
 (autoload 'auto-capitalize-mode "auto-capitalize"
@@ -477,6 +477,12 @@
   "Enable `auto-capitalize' minor mode in this buffer." t)
 
 (require 'markdown-mode)
+
+
+(use-package keyfreq
+  :init
+  (keyfreq-mode 1)
+  (keyfreq-autosave-mode 1))
 
 
 (provide 'packages)

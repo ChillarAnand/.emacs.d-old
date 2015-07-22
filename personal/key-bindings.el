@@ -11,12 +11,14 @@
 ;; unbind-keys
 (define-key comint-mode-map (kbd "C-c C-o") nil)
 
-
+;; global key binds
 (global-set-key (kbd "C-c C-b") 'prelude-switch-to-previous-buffer)
-(global-set-key (kbd "C-c C-o") 'other-window)
 (global-set-key (kbd "C-c C-f") 'helm-projectile-find-file)
-(global-set-key (kbd "C-c C-v") 'eval-buffer)
 (global-set-key (kbd "C-c C-g") 'beginning-of-buffer)
+(global-set-key (kbd "C-c C-k") 'delete-other-windows)
+(global-set-key (kbd "C-c C-v") 'eval-buffer)
+
+(global-set-key (kbd "C-x C-o") 'other-window)
 
 (global-set-key (kbd "C-h C-m") 'discover-my-major)
 
@@ -24,6 +26,10 @@
 
 (global-set-key (kbd "C-?") 'help-command)
 (global-set-key (kbd "M-?") 'mark-paragraph)
+(global-set-key (kbd "C-,") 'avy-goto-char)
+
+
+
 
 (global-set-key (kbd "M-h") 'backward-kill-word)
 
@@ -32,48 +38,42 @@
 
 (prelude-require-package 'key-chord)
 
-(require 'key-chord)
-
-(key-chord-define-global "GG" 'end-of-buffer)
-
 (key-chord-define-global "ps" 'helm-projectile-switch-project)
 (key-chord-define-global "pf" 'helm-projectile-find-file)
 (key-chord-define-global "pg" 'helm-projectile-grep)
 
-(key-chord-define-global "mx" 'helm-M-x)
 (key-chord-define-global "jf" 'helm-mini)
 (key-chord-define-global "js" 'helm-semantic-or-imenu)
+
+(key-chord-define-global "mx" 'helm-M-x)
+
 (key-chord-define-global "hr" 'helm-resume)
 (key-chord-define-global "mr" 'helm-all-mark-rings)
 
 (key-chord-define-global "mg" 'magit-status)
 
-(key-chord-define-global "mm" 'set-mark-command)
-(key-chord-define-global "sm" 'set-mark-command)
+(key-chord-define-global "ms" 'set-mark-command)
 
-(key-chord-define-global "kf" 'kill-this-buffer)
-(key-chord-define-global "x0" 'delete-window)
-(key-chord-define-global "kw" 'delete-window)
-(key-chord-define-global "kk" 'delete-other-windows)
+(key-chord-define-global "kf" 'bury-buffer)
+(key-chord-define-global "kw" 'delete-other-windows)
 
 (key-chord-define-global "dk" 'describe-key)
 (key-chord-define-global "dv" 'describe-variable)
 (key-chord-define-global "df" 'describe-function)
-(key-chord-define-global "hk" 'describe-key)
-(key-chord-define-global "hv" 'describe-variable)
-(key-chord-define-global "hf" 'describe-function)
 
 (key-chord-define-global "pt" 'prelude-tip-of-the-day)
 
-(key-chord-define-global "jj" 'ace-jump-word-mode)
+(key-chord-define-global "jc" 'ace-jump-char-mode)
 (key-chord-define-global "jl" 'ace-jump-line-mode)
-(key-chord-define-global "jk" 'ace-jump-char-mode)
-(key-chord-define-global "JJ" 'prelude-switch-to-previous-buffer)
+(key-chord-define-global "jw" 'ace-jump-word-mode)
+
 (key-chord-define-global "uu" 'undo-tree-visualize)
 (key-chord-define-global "xx" 'execute-extended-command)
 (key-chord-define-global "dd" 'prelude-kill-whole-line)
 (key-chord-define-global "md" 'helm-dired-recent-dirs-view)
-(key-chord-define-global "yy" 'copy-line)
+
+(key-chord-define-global "GG" 'end-of-buffer)
+
 
 
 (defvar key-chord-tips
