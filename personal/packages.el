@@ -17,12 +17,13 @@
     helm-dired-recent-dirs google-translate slime ace-link helm-chrome
     writeroom-mode writegood-mode benchmark-init phi-search))
 
-
+(prelude-require-package 'use-package)
 (require 'use-package)
 
 ;; (load-file "~/projects/lisp/impatient-markup/impatient-markup.el")
 ;; (impatient-markup-enable)
 
+(use-package save-sexp)
 
 (use-package smartparens
   :init
@@ -71,28 +72,32 @@
 (load-file "~/projects/lisp/real-auto-save/real-auto-save.el")
 (add-hook 'prog-mode-hook 'real-auto-save-mode)
 (setq real-auto-save-interval 4)
+;; (save-sexp-save-setq "~/.emacs.d/personal/variables.el" 'real-auto-save-alist)
+(setq test '(1 2 3))
+(savehist-mode 1)
+;; (eval-after-load "savehist"
+;;   '(add-to-list 'savehist-additional-variables 'test))
 
 
 (use-package multiple-cursors
   :init
-  (progn
-    (global-set-key (kbd "C-c m e") 'mc/edit-lines)
-    (global-set-key (kbd "C-c m a") 'mc/mark-all-like-this)
-    (global-set-key (kbd "C->") 'mc/mark-next-like-this)
-    (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)))
+  (global-set-key (kbd "C-c m e") 'mc/edit-lines)
+  (global-set-key (kbd "C-c m a") 'mc/mark-all-like-this)
+  (global-set-key (kbd "C->") 'mc/mark-next-like-this)
+  (global-set-key (kbd "C-<") 'mc/mark-previous-like-this))
 
 
-(use-package delight
-  :init
-  (delight '((abbrev-mode " Abv" abbrev)
-             (smart-tab-mode " t" smart-tab)
-             (eldoc-mode nil "eldoc")
-             (paredit-mode " par" paredit)
-             (projectile-mode " proj" projectile)
-             (emacs-lisp-mode "Elisp" :major)
-             (rainbow-mode)
-             (flyspell-mode nil flyspell)
-             (guru-mode nil guru))))
+;; (use-package delight
+;;   :init
+;;   (delight '((abbrev-mode " Abv" abbrev)
+;;              (smart-tab-mode " t" smart-tab)
+;;              (eldoc-mode nil "eldoc")
+;;              (paredit-mode " par" paredit)
+;;              (projectile-mode " proj" projectile)
+;;              (emacs-lisp-mode "Elisp" :major)
+;;              (rainbow-mode)
+;;              (flyspell-mode nil flyspell)
+;;              (guru-mode nil guru))))
 
 
 (use-package company
