@@ -1,142 +1,107 @@
 ;;; key-bindings.el --- key bindings
 ;;-*- lexical-binding: t; -*-
 
-;; Copyright (C) 2015  K3
-
-;; Author: K3;;; Code: <k3@k3-desktop>
-;; Keywords:
-
 ;;; Code:
 
 ;; unbind-keys
-(define-key comint-mode-map (kbd "C-c C-o") nil)
+
 
 ;; global key binds
-(global-set-key (kbd "C-c C-b") 'prelude-switch-to-previous-buffer)
 (global-set-key (kbd "C-c C-f") 'helm-projectile-find-file)
 (global-set-key (kbd "C-c C-g") 'beginning-of-buffer)
 (global-set-key (kbd "C-c C-k") 'delete-other-windows)
 (global-set-key (kbd "C-c C-v") 'eval-buffer)
 
+(global-set-key (kbd "C-x C-b") 'switch-to-previous-buffer)
+(global-set-key (kbd "C-x C-d") 'current-dired)
+(global-set-key (kbd "C-x C-m") 'smex)
 (global-set-key (kbd "C-x C-o") 'other-window)
 
-(global-set-key (kbd "C-h C-m") 'discover-my-major)
-
-(global-set-key (kbd "C-x C-d") 'current-dired)
-
-(global-set-key (kbd "C-?") 'help-command)
-(global-set-key (kbd "M-?") 'mark-paragraph)
+(global-set-key (kbd "C-+") 'text-scale-increase)
+(global-set-key (kbd "C--") 'text-scale-decrease)
 (global-set-key (kbd "C-,") 'avy-goto-char)
+(global-set-key (kbd "C-^") 'prelude-top-join-line)
 
-
-
-
+(global-set-key (kbd "M-?") 'mark-paragraph)
 (global-set-key (kbd "M-h") 'backward-kill-word)
 
 
-;;; key chord
+;; Start proced in a similar manner to dired
+(unless (eq system-type 'darwin)
+  (global-set-key (kbd "C-x p") 'proced))
 
-(prelude-require-package 'key-chord)
-
-(key-chord-define-global "ps" 'helm-projectile-switch-project)
-(key-chord-define-global "pf" 'helm-projectile-find-file)
-(key-chord-define-global "pg" 'helm-projectile-grep)
-
-(key-chord-define-global "jf" 'helm-mini)
-(key-chord-define-global "js" 'helm-semantic-or-imenu)
-
-(key-chord-define-global "mx" 'helm-M-x)
-
-(key-chord-define-global "hr" 'helm-resume)
-(key-chord-define-global "mr" 'helm-all-mark-rings)
-
-(key-chord-define-global "mg" 'magit-status)
-
-(key-chord-define-global "ms" 'set-mark-command)
-
-(key-chord-define-global "kf" 'bury-buffer)
-(key-chord-define-global "kw" 'delete-other-windows)
-
-(key-chord-define-global "dk" 'describe-key)
-(key-chord-define-global "dv" 'describe-variable)
-(key-chord-define-global "df" 'describe-function)
-
-(key-chord-define-global "pt" 'prelude-tip-of-the-day)
-
-(key-chord-define-global "jc" 'ace-jump-char-mode)
-(key-chord-define-global "jl" 'ace-jump-line-mode)
-(key-chord-define-global "jw" 'ace-jump-word-mode)
-
-(key-chord-define-global "uu" 'undo-tree-visualize)
-(key-chord-define-global "xx" 'execute-extended-command)
-(key-chord-define-global "dd" 'prelude-kill-whole-line)
-(key-chord-define-global "md" 'helm-dired-recent-dirs-view)
-
-(key-chord-define-global "GG" 'end-of-buffer)
+(define-key 'help-command "A" 'apropos)
+(define-key 'help-command (kbd "C-f") 'find-function)
+(define-key 'help-command (kbd "C-i") 'info-display-manual)
+(define-key 'help-command (kbd "C-k") 'find-function-on-key)
+(define-key 'help-command (kbd "C-l") 'find-library)
+(define-key 'help-command (kbd "C-m") 'discover-my-major)
+(define-key 'help-command (kbd "C-v") 'find-variable)
 
 
+;; replace zap-to-char functionaity with the more powerful zop-to-char
+(global-set-key (kbd "M-z") 'zop-up-to-char)
+(global-set-key (kbd "M-Z") 'zop-to-char)
 
-(defvar key-chord-tips
-  '("pt prelude-tip-of-the-day"
-    "kt key-chord-tips"
+;; kill lines backward
+(global-set-key (kbd "C-<backspace>") (lambda ()
+                                        (interactive)
+                                        (kill-line 0)
+                                        (indent-according-to-mode)))
 
-    "gg beginning-of-buffer"
-    "GG end-of-buffer"
+(global-set-key [remap kill-whole-line] 'prelude-kill-whole-line)
 
-    "sp helm-projectile-switch-project"
-    "pf helm-projectile-find-file"
-    "pg helm-projectile-grep"
+;; Activate occur easily inside isearch
+(define-key isearch-mode-map (kbd "C-o")
+  (lambda () (interactive)
+    (let ((case-fold-search isearch-case-fold-search))
+      (occur (if isearch-regexp
+                 isearch-string
+               (regexp-quote isearch-string))))))
 
-    "mx helm-M-x"
-    "jf helm-mini"
-    "js helm-semantic-or-imenu"
-    "hr helm-resume"
-    "mr helm-all-mark-rings"
+;; use hippie-expand instead of dabbrev
+(global-set-key (kbd "M-/") 'hippie-expand)
 
-    "mg magit-status"
+;; replace buffer-menu with ibuffer
+(global-set-key (kbd "C-x C-b") 'ibuffer)
 
-    "mm set-mark-command"
-    "sm set-mark-command"
+(unless (fboundp 'toggle-frame-fullscreen)
+  (global-set-key (kbd "<f11>") 'prelude-fullscreen))
 
-    "kf kill-this-buffer"
-    "kk delete-other-windows"
-    "bb prelude-switch-to-previous-buffer"
-    "xo other-window"
-    "x0 delete-window"
+;; toggle menu-bar visibility
+(global-set-key (kbd "<f12>") 'menu-bar-mode)
 
-    "dk describe-key"
-    "hk describe-key"
-    "hv describe-variable"
-    "dv describe-variable"
+(global-set-key (kbd "C-x g") 'magit-status)
 
-    "yy copy-line"
-
-    "jj ace-jump-word-mode"
-    "jl ace-jump-line-mode"
-    "jk ace-jump-char-mode"
-    "JJ prelude-switch-to-previous-buffer"
-    "uu undo-tree-visualize"
-    "xx execute-extended-command"))
-
-(defun key-chord-tip-of-the-day ()
-  "Display a random entry from `key-chord-tips'."
-  (interactive)
-  (unless (window-minibuffer-p)
-    ;; pick a new random seed
-    (random t)
-    (message
-     (concat "key chord: "
-             (nth (random (length key-chord-tips)) key-chord-tips)))))
-
-(key-chord-define-global "kt" 'key-chord-tip-of-the-day)
-
-(setq prelude-tips (append prelude-tips key-chord-tips))
-
-(key-chord-mode +1)
+(global-set-key (kbd "C-=") 'er/expand-region)
 
 ;;(global-set-key (kbd "C-h") 'paredit-backward-delete)
 ;;(global-set-key (kbd "C-h") 'delete-backward-char)
 
+
+;;; key chord
+(require 'key-chord)
+(key-chord-mode +1)
+
+(key-chord-define-global "dd" 'delete-whole-line)
+(key-chord-define-global "df" 'describe-function)
+(key-chord-define-global "dk" 'describe-key)
+(key-chord-define-global "dv" 'describe-variable)
+(key-chord-define-global "hr" 'helm-resume)
+(key-chord-define-global "jc" 'avy-goto-char)
+(key-chord-define-global "jb" 'switch-to-previous-buffer)
+(key-chord-define-global "jd" 'helm-dired-recent-dirs-view)
+(key-chord-define-global "jf" 'helm-mini)
+(key-chord-define-global "jl" 'avy-goto-line)
+(key-chord-define-global "js" 'helm-semantic-or-imenu)
+(key-chord-define-global "kf" 'bury-buffer)
+(key-chord-define-global "kw" 'delete-window)
+(key-chord-define-global "mg" 'magit-status)
+(key-chord-define-global "mx" 'helm-M-x)
+(key-chord-define-global "ps" 'helm-projectile-switch-project)
+(key-chord-define-global "pf" 'helm-projectile-find-file)
+(key-chord-define-global "pg" 'helm-projectile-grep)
+(key-chord-define-global "sm" 'set-mark-command)
 
 
 (provide 'key-bindings)
