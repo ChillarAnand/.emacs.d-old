@@ -49,7 +49,7 @@
                                         (kill-line 0)
                                         (indent-according-to-mode)))
 
-(global-set-key [remap kill-whole-line] 'prelude-kill-whole-line)
+(global-set-key [remap kill-whole-line] 'delete-whole-line)
 
 ;; Activate occur easily inside isearch
 (define-key isearch-mode-map (kbd "C-o")
@@ -61,17 +61,14 @@
 
 ;; use hippie-expand instead of dabbrev
 (global-set-key (kbd "M-/") 'hippie-expand)
-
 ;; replace buffer-menu with ibuffer
-(global-set-key (kbd "C-x C-b") 'ibuffer)
+(global-set-key (kbd "C-x C-b") 'switch-to-previous-buffer)
 
 (unless (fboundp 'toggle-frame-fullscreen)
   (global-set-key (kbd "<f11>") 'prelude-fullscreen))
 
 ;; toggle menu-bar visibility
 (global-set-key (kbd "<f12>") 'menu-bar-mode)
-
-(global-set-key (kbd "C-x g") 'magit-status)
 
 (global-set-key (kbd "C-=") 'er/expand-region)
 
@@ -96,6 +93,7 @@
 (key-chord-define-global "js" 'helm-semantic-or-imenu)
 (key-chord-define-global "kf" 'bury-buffer)
 (key-chord-define-global "kw" 'delete-window)
+(key-chord-define-global "md" 'current-dired)
 (key-chord-define-global "mg" 'magit-status)
 (key-chord-define-global "mx" 'helm-M-x)
 (key-chord-define-global "ps" 'helm-projectile-switch-project)

@@ -10,12 +10,13 @@
 
 (prelude-require-packages
  '(use-package helm-swoop multiple-cursors delight company header2 web-mode
-    sqlup-mode company-quickhelp perspective nyan-mode magit sx smartparens
+    sqlup-mode company-quickhelp perspective nyan-mode sx smartparens
     edit-server paredit guide-key helm-descbinds multi-term free-keys helm
     electric-case helm-github-stars auto-package-update smart-mode-line circe
     pony-mode highlight-symbol comment-dwim-2 openwith aggressive-indent
     helm-dired-recent-dirs google-translate slime ace-link helm-chrome
-    writeroom-mode writegood-mode benchmark-init phi-search))
+    writeroom-mode writegood-mode benchmark-init phi-search key-chord
+    which-key))
 
 (prelude-require-package 'use-package)
 (require 'use-package)
@@ -159,9 +160,8 @@
 
 (use-package magit
   :init
-  (progn
-    (setq magit-status-buffer-switch-function 'switch-to-buffer)
-    (setq magit-last-seen-setup-instructions "1.4.0")))
+  (setq magit-status-buffer-switch-function 'switch-to-buffer)
+  (setq magit-last-seen-setup-instructions "1.4.0"))
 
 
 (use-package sx
@@ -231,16 +231,11 @@
 
 (use-package guide-key
   :init
-  (progn
-    (setq guide-key/idle-delay 0.5)
-    (setq guide-key/popup-window-position 'bottom)
-    (setq guide-key/guide-key-sequence
-          '("C" "ESC"
-            "C-c" "C-h" "C-x"
-            "C-c p" "C-x r"
-            "C-c C-b"  "C-c C-e" "C-c C-t" "C-c C-p" "C-c C-l"
-            "C-c C-p g"))
-    (guide-key-mode 1)))
+  (setq guide-key/idle-delay 0.5)
+  (setq guide-key/popup-window-position 'bottom)
+  (setq guide-key/guide-key-sequence t)
+  (setq guide-key/guide-key-sequence '("<key-chord>"))
+  (guide-key-mode 1))
 
 
 (use-package multi-term
@@ -488,6 +483,19 @@
   :init
   (keyfreq-mode 1)
   (keyfreq-autosave-mode 1))
+
+
+(use-package key-chord
+  :init
+  (setq key-chord-one-keys-delay 0.5)
+  (setq key-chord-two-keys-delay 0.5))
+
+
+(use-package which-key
+  :init
+  (which-key-mode)
+  (which-key-setup-side-window-right))
+
 
 
 (provide 'packages)

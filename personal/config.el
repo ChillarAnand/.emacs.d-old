@@ -23,10 +23,6 @@
 
 (add-hook 'python-mode-hook (turn-on-smartparens-strict-mode))
 
-(defun current-dired ()
-  (interactive)
-  (dired "."))
-
 ;; copy line
 (defun copy-line (arg)
   "Copy lines (as many as prefix argument) in the kill ring.
@@ -147,32 +143,7 @@ interval: %S"  real-auto-save-timer  real-auto-save-buffers-list real-auto-save-
 ;;   "Show real-auto-save variables list.")
 ;; (add-hook 'evil-mode-hook 'evil-mode-bindings)
 
-(defun swap-numbers-symbols ()
-  "Bind symbols to digits."
-  (define-key key-translation-map (kbd "!") (kbd "1"))
-  (define-key key-translation-map (kbd "@") (kbd "2"))
-  (define-key key-translation-map (kbd "#") (kbd "3"))
-  (define-key key-translation-map (kbd "$") (kbd "4"))
-  (define-key key-translation-map (kbd "%") (kbd "5"))
-  (define-key key-translation-map (kbd "^") (kbd "6"))
-  (define-key key-translation-map (kbd "&") (kbd "7"))
-  (define-key key-translation-map (kbd "*") (kbd "8"))
-  (define-key key-translation-map (kbd "(") (kbd "9"))
-  (define-key key-translation-map (kbd ")") (kbd "0"))
-
-  (define-key key-translation-map (kbd "1") (kbd "!"))
-  (define-key key-translation-map (kbd "2") (kbd "@"))
-  (define-key key-translation-map (kbd "3") (kbd "#"))
-  (define-key key-translation-map (kbd "4") (kbd "$"))
-  (define-key key-translation-map (kbd "5") (kbd "%"))
-  (define-key key-translation-map (kbd "6") (kbd "^"))
-  (define-key key-translation-map (kbd "7") (kbd "&"))
-  (define-key key-translation-map (kbd "8") (kbd "*"))
-  (define-key key-translation-map (kbd "9") (kbd "("))
-  (define-key key-translation-map (kbd "0") (kbd ")"))
-  )
-
-(swap-numbers-symbols)
+;; (swap-numbers-symbols)
 
 
 ;;(define-key evil-normal-state-map "5" 'evil-beginning-of-line)
