@@ -8,16 +8,6 @@
 ;;; Code:
 
 
-(prelude-require-packages
- '(use-package helm-swoop multiple-cursors delight company header2 web-mode
-    sqlup-mode company-quickhelp perspective nyan-mode sx smartparens
-    edit-server paredit guide-key helm-descbinds multi-term free-keys helm
-    electric-case helm-github-stars auto-package-update smart-mode-line circe
-    highlight-symbol comment-dwim-2 openwith aggressive-indent
-    helm-dired-recent-dirs google-translate slime ace-link helm-chrome
-    writeroom-mode writegood-mode benchmark-init phi-search key-chord
-    which-key helm bm))
-
 (require 'use-package)
 
 ;; (load-file "~/projects/lisp/impatient-markup/impatient-markup.el")
@@ -261,7 +251,8 @@
 (use-package impatient-mode)
 
 (use-package pony-mode
-  :init
+  :ensure t
+  :config
   (setq pony-server-host "127.0.0.1")
   (add-hook 'python-mode-hook 'pony-mode))
 
@@ -447,13 +438,14 @@
 
 
 (use-package expand-region
-  :init
+  :ensure t
+  :config
   (global-set-key (kbd "C-=") 'er/expand-region))
 
-(use-package python-environment)
 
 (use-package bm
-  :init
+  :ensure t
+  :config
   (global-set-key (kbd "<f5>") 'bm-toggle)
   (global-set-key (kbd "<f7>") 'bm-next)
   (global-set-key (kbd "<f6>") 'bm-previous))
