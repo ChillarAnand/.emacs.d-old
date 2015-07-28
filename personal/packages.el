@@ -13,10 +13,10 @@
     sqlup-mode company-quickhelp perspective nyan-mode sx smartparens
     edit-server paredit guide-key helm-descbinds multi-term free-keys helm
     electric-case helm-github-stars auto-package-update smart-mode-line circe
-    pony-mode highlight-symbol comment-dwim-2 openwith aggressive-indent
+    highlight-symbol comment-dwim-2 openwith aggressive-indent
     helm-dired-recent-dirs google-translate slime ace-link helm-chrome
     writeroom-mode writegood-mode benchmark-init phi-search key-chord
-    which-key))
+    which-key virtualenvwrapper helm))
 
 (prelude-require-package 'use-package)
 (require 'use-package)
@@ -432,20 +432,19 @@
   :init
   (ace-link-setup-default))
 
-(require 'company)
-(require 'company-web-html)
-(add-to-list 'company-backends 'company-web-html)
 
-(define-key web-mode-map (kbd "C-'") 'company-web-html)
-(add-hook 'web-mode-hook (lambda ()
-                           (set (make-local-variable 'company-backends) '(company-web-html company-files))
-                           (company-mode t)))
+;; (require 'company)
+;; (require 'company-web-html)
+;; (add-to-list 'company-backends 'company-web-html)
+
+;; (define-key web-mode-map (kbd "C-'") 'company-web-html)
+;; (add-hook 'web-mode-hook (lambda ()
+;;                            (set (make-local-variable 'company-backends) '(company-web-html company-files))
+;;                            (company-mode t)))
 
 
 (use-package writegood)
-
 (use-package writeroom)
-
 (use-package sotlisp)
 
 
@@ -469,12 +468,14 @@
 ;;     (global-set-key (kbd "C-c C-d") 'elisp-slime-nav-describe-elisp-thing-at-point)))
 
 
-(autoload 'auto-capitalize-mode "auto-capitalize"
-  "Toggle `auto-capitalize' minor mode in this buffer." t)
-(autoload 'turn-on-auto-capitalize-mode "auto-capitalize"
-  "Turn on `auto-capitalize' minor mode in this buffer." t)
-(autoload 'enable-auto-capitalize-mode "auto-capitalize"
-  "Enable `auto-capitalize' minor mode in this buffer." t)
+(use-package auto-capitalize
+  :init
+  (autoload 'auto-capitalize-mode "auto-capitalize"
+    "Toggle `auto-capitalize' minor mode in this buffer." t)
+  (autoload 'turn-on-auto-capitalize-mode "auto-capitalize"
+    "Turn on `auto-capitalize' minor mode in this buffer." t)
+  (autoload 'enable-auto-capitalize-mode "auto-capitalize"
+    "Enable `auto-capitalize' minor mode in this buffer." t))
 
 (require 'markdown-mode)
 
@@ -496,6 +497,12 @@
   (which-key-mode)
   (which-key-setup-side-window-right))
 
+
+(use-package expand-region
+  :init
+  (global-set-key (kbd "C-=") 'er/expand-region))
+
+(use-package python-environment)
 
 
 (provide 'packages)

@@ -6,31 +6,36 @@
 ;; unbind-keys
 
 
-;; global key binds
-(global-set-key (kbd "C-c C-f") 'helm-projectile-find-file)
-(global-set-key (kbd "C-c C-g") 'beginning-of-buffer)
-(global-set-key (kbd "C-c C-k") 'delete-other-windows)
-(global-set-key (kbd "C-c C-v") 'eval-buffer)
+(bind-keys*
 
-(global-set-key (kbd "C-x C-b") 'switch-to-previous-buffer)
-(global-set-key (kbd "C-x C-d") 'current-dired)
-(global-set-key (kbd "C-x C-m") 'smex)
-(global-set-key (kbd "C-x C-o") 'other-window)
-
-(global-set-key (kbd "C-+") 'text-scale-increase)
-(global-set-key (kbd "C--") 'text-scale-decrease)
-(global-set-key (kbd "C-,") 'avy-goto-char)
-(global-set-key (kbd "C-^") 'prelude-top-join-line)
-
-(global-set-key (kbd "M-?") 'mark-paragraph)
-(global-set-key (kbd "M-h") 'backward-kill-word)
+ ("<f12>" . menu-bar-mode)
+ 
+ ("C-+" .  text-scale-increase)
+ ("C--" .  text-scale-decrease)
+ ("C-," .  avy-goto-char)
+ ("C-^" .  top-join-line)
+ 
+ ("C-c C-f" .  helm-projectile-find-file)
+ ("C-c C-g" .  beginning-of-buffer)
+ ("C-c C-k" .  delete-other-windows)
+ ("C-c C-v" .  eval-buffer)
+ ("C-x C-b" .  switch-to-previous-buffer)
+ ("C-x C-d" .  current-dired)
+ ("C-x C-m" .  smex)
+ 
+ ("M-h" .  backward-kill-word)
+ ("M-o" . other-window)
+ ("M-z" . zop-up-to-char)
+ ("M-Z" . zop-to-char)
+ ("M-?" .  mark-paragraph)
+ ("M-/" . hippie-expand))
 
 
 ;; Start proced in a similar manner to dired
 (unless (eq system-type 'darwin)
   (global-set-key (kbd "C-x p") 'proced))
 
-(define-key 'help-command "A" 'apropos)
+(define-key 'help-command (kbd "A") 'apropos)
 (define-key 'help-command (kbd "C-f") 'find-function)
 (define-key 'help-command (kbd "C-i") 'info-display-manual)
 (define-key 'help-command (kbd "C-k") 'find-function-on-key)
@@ -39,17 +44,13 @@
 (define-key 'help-command (kbd "C-v") 'find-variable)
 
 
-;; replace zap-to-char functionaity with the more powerful zop-to-char
-(global-set-key (kbd "M-z") 'zop-up-to-char)
-(global-set-key (kbd "M-Z") 'zop-to-char)
-
 ;; kill lines backward
 (global-set-key (kbd "C-<backspace>") (lambda ()
                                         (interactive)
                                         (kill-line 0)
                                         (indent-according-to-mode)))
 
-(global-set-key [remap kill-whole-line] 'delete-whole-line)
+;; (global-set-key [remap kill-whole-line] 'delete-whole-line)
 
 ;; Activate occur easily inside isearch
 (define-key isearch-mode-map (kbd "C-o")
@@ -60,17 +61,15 @@
                (regexp-quote isearch-string))))))
 
 ;; use hippie-expand instead of dabbrev
-(global-set-key (kbd "M-/") 'hippie-expand)
+
 ;; replace buffer-menu with ibuffer
-(global-set-key (kbd "C-x C-b") 'switch-to-previous-buffer)
+
 
 (unless (fboundp 'toggle-frame-fullscreen)
   (global-set-key (kbd "<f11>") 'prelude-fullscreen))
 
 ;; toggle menu-bar visibility
-(global-set-key (kbd "<f12>") 'menu-bar-mode)
 
-(global-set-key (kbd "C-=") 'er/expand-region)
 
 ;;(global-set-key (kbd "C-h") 'paredit-backward-delete)
 ;;(global-set-key (kbd "C-h") 'delete-backward-char)
