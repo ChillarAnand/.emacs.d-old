@@ -16,7 +16,7 @@
     highlight-symbol comment-dwim-2 openwith aggressive-indent
     helm-dired-recent-dirs google-translate slime ace-link helm-chrome
     writeroom-mode writegood-mode benchmark-init phi-search key-chord
-    which-key virtualenvwrapper helm))
+    which-key helm bm))
 
 (require 'use-package)
 
@@ -254,14 +254,15 @@
   (setq circe-reduce-lurker-spam t))
 
 
-(use-package wakatime-mode
-  :init
-  (global-wakatime-mode))
+;; (use-package wakatime-mode
+;;   :init
+;;   (global-wakatime-mode))
 
 (use-package impatient-mode)
 
 (use-package pony-mode
   :init
+  (setq pony-server-host "127.0.0.1")
   (add-hook 'python-mode-hook 'pony-mode))
 
 
@@ -450,6 +451,12 @@
   (global-set-key (kbd "C-=") 'er/expand-region))
 
 (use-package python-environment)
+
+(use-package bm
+  :init
+  (global-set-key (kbd "<f5>") 'bm-toggle)
+  (global-set-key (kbd "<f7>") 'bm-next)
+  (global-set-key (kbd "<f6>") 'bm-previous))
 
 
 (provide 'packages)
