@@ -9,32 +9,32 @@
 
 
 (require 'use-package)
-
+(setq use-package-always-ensure t)
 ;; (load-file "~/projects/lisp/impatient-markup/impatient-markup.el")
 ;; (impatient-markup-enable)
 
 (use-package save-sexp)
 
 (use-package smartparens
-  :init
-  (progn
-    (require 'smartparens-config)
-    (smartparens-global-mode 1)
-    (sp-pair "`" "`" :wrap "C-`")
-    (defun strict-smartparens ()
-      (turn-on-smartparens-strict-mode))
-    (add-hook 'prog-mode-hook 'strict-smartparens)))
+  :config
+  (require 'smartparens-config)
+  (smartparens-global-mode 1)
+  (sp-pair "`" "`" :wrap "C-`")
+  (defun strict-smartparens ()
+    (turn-on-smartparens-strict-mode))
+  (add-hook 'prog-mode-hook 'strict-smartparens))
 
 
 (add-to-list 'load-path "~/projects/lisp/elpy")
 (load "elpy" nil t)
 (elpy-enable)
 (use-package elpy
-  :init
+  :config
   (setq python-indent-offset 4)
   (setq elpy-test-runner 'elpy-test-pytest-runner)
-
-  (define-key elpy-mode-map (kbd "C-c C-c") 'my/send-region-or-buffer)
+  (setq elpy-rpc-timeout nil)
+  (append grep-find-ignored-files "flycheck_*")
+  
   (defun my/send-region-or-buffer (&optional arg)
     (interactive "P")
     (elpy-shell-send-region-or-buffer arg)
@@ -42,13 +42,9 @@
       (set-window-point (get-buffer-window (current-buffer))
                         (point-max))))
 
-  (define-key elpy-mode-map (kbd "C-<right>") nil)
-  (define-key elpy-mode-map (kbd "C-c C-o") nil)
-  (define-key elpy-mode-map (kbd "C-<left>") nil)
-  (define-key elpy-mode-map (kbd "C-c C-c") 'my/send-region-or-buffer)
-
-  (setq elpy-rpc-timeout nil)
-  (append grep-find-ignored-files "flycheck_*"))
+  (bind-key "C-<left>" nil)
+  (bind-key "C-<right>" nil)
+  (bind-key "C-c C-c" 'my/send-region-or-buffer))
 
 
 (load-file "~/projects/lisp/real-auto-save/real-auto-save.el")
@@ -130,55 +126,56 @@
     (setq edit-server-new-frame nil)
     (edit-server-start)))
 
+(require 'sql)
 
-(use-package mysql
-  :init
-  (require 'sql)
-  (add-hook 'sql-mode-hook 'sqlup-mode)
-  (sql-set-product "mysql")
+;; (use-package mysql
+;;   :init
 
-  (add-hook 'sql-interactive-mode-hook
-            (lambda ()
-              (toggle-truncate-lines t)))
+;;   (add-hook 'sql-mode-hook 'sqlup-mode)
+;;   (sql-set-product "mysql")
 
-  (load-file "~/.emacs.d/.private.el")
+;;   (add-hook 'sql-interactive-mode-hook
+;;             (lambda ()
+;;               (toggle-truncate-lines t)))
 
-  (setq sql-connection-alist
-        '((pool-server
-           (sql-server sql-server-address)
-           (sql-user sql-server-user)
-           (sql-password sql-server-password)
-           (sql-database sql-server-database)
-           (sql-port sql-server-port))
+;;   (load-file "~/.emacs.d/.private.el")
 
-          (pool-local
-           (sql-server sql-local-server)
-           (sql-user sql-local-user)
-           (sql-password sql-local-password)
-           (sql-database sql-local-database)
-           (sql-port sql-local-port))))
+;;   (setq sql-connection-alist
+;;         '((pool-server
+;;            (sql-server sql-server-address)
+;;            (sql-user sql-server-user)
+;;            (sql-password sql-server-password)
+;;            (sql-database sql-server-database)
+;;            (sql-port sql-server-port))
 
-  (defun sql-connect-preset (name)
-    "Connect to a predefined SQL connection listed in `sql-connection-alist'"
-    (eval `(let ,(cdr (assoc name sql-connection-alist))
-             (flet ((sql-get-login (&rest what)))
-               (sql-product-interactive sql-product)))))
+;;           (pool-local
+;;            (sql-server sql-local-server)
+;;            (sql-user sql-local-user)
+;;            (sql-password sql-local-password)
+;;            (sql-database sql-local-database)
+;;            (sql-port sql-local-port))))
 
-  (defun sql-pool-server ()
-    (interactive)
-    (sql-connect-preset 'pool-server))
+;;   (defun sql-connect-preset (name)
+;;     "Connect to a predefined SQL connection listed in `sql-connection-alist'"
+;;     (eval `(let ,(cdr (assoc name sql-connection-alist))
+;;              (flet ((sql-get-login (&rest what)))
+;;                (sql-product-interactive sql-product)))))
 
-  (defun sql-pool-local ()
-    (interactive)
-    (sql-connect-preset 'pool-local))
+;;   (defun sql-pool-server ()
+;;     (interactive)
+;;     (sql-connect-preset 'pool-server))
 
-  (define-key sql-mode-map (kbd "C-c C-c") 'mysql-send-paragraph)
-  (defun mysql-send-paragraph ()
-    (interactive)
-    (sql-send-paragraph)
-    (with-current-buffer (process-buffer (get-process "SQL"))
-      (set-window-point (get-buffer-window (current-buffer))
-                        (point-max)))))
+;;   (defun sql-pool-local ()
+;;     (interactive)
+;;     (sql-connect-preset 'pool-local))
+
+;;   (define-key sql-mode-map (kbd "C-c C-c") 'mysql-send-paragraph)
+;;   (defun mysql-send-paragraph ()
+;;     (interactive)
+;;     (sql-send-paragraph)
+;;     (with-current-buffer (process-buffer (get-process "SQL"))
+;;       (set-window-point (get-buffer-window (current-buffer))
+;;                         (point-max)))))
 
 
 (use-package multi-term
@@ -231,17 +228,17 @@
   (rich-minority-mode 1))
 
 
-(use-package circe
-  :init
-  (setq circe-network-options
-        `(("Freenode"
-           :nick "chillaranand"
-           :channels
-           ("#emacs" "#emacs-circe" "#emacs-elpy"
-            "#python-india" "#python-dev"
-            "#dgplug")
-           :nickserv-password ,freenode-password)))
-  (setq circe-reduce-lurker-spam t))
+;; (use-package circe
+;;   :init
+;;   (setq circe-network-options
+;;         `(("Freenode"
+;;            :nick "chillaranand"
+;;            :channels
+;;            ("#emacs" "#emacs-circe" "#emacs-elpy"
+;;             "#python-india" "#python-dev"
+;;             "#dgplug")
+;;            :nickserv-password ,freenode-password)))
+;;   (setq circe-reduce-lurker-spam t))
 
 
 ;; (use-package wakatime-mode
@@ -382,8 +379,8 @@
 ;;                            (company-mode t)))
 
 
-(use-package writegood)
-(use-package writeroom)
+(use-package writegood-mode)
+(use-package writeroom-mode)
 (use-package sotlisp)
 
 
