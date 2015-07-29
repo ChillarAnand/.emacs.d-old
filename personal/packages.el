@@ -10,6 +10,8 @@
 
 (require 'use-package)
 (setq use-package-always-ensure t)
+(load-file "~/.emacs.d/.private.el")
+
 ;; (load-file "~/projects/lisp/impatient-markup/impatient-markup.el")
 ;; (impatient-markup-enable)
 
@@ -41,10 +43,10 @@
     (with-current-buffer (process-buffer (elpy-shell-get-or-create-process))
       (set-window-point (get-buffer-window (current-buffer))
                         (point-max))))
-
+  
   (bind-key "C-<left>" nil)
   (bind-key "C-<right>" nil)
-  (bind-key "C-c C-c" 'my/send-region-or-buffer))
+  (bind-key "C-c C-c" 'my/send-region-or-buffer)))
 
 
 (load-file "~/projects/lisp/real-auto-save/real-auto-save.el")
@@ -126,20 +128,17 @@
     (setq edit-server-new-frame nil)
     (edit-server-start)))
 
+
 (require 'sql)
 
 ;; (use-package mysql
 ;;   :init
-
+;;   (require 'sql)
 ;;   (add-hook 'sql-mode-hook 'sqlup-mode)
 ;;   (sql-set-product "mysql")
-
 ;;   (add-hook 'sql-interactive-mode-hook
 ;;             (lambda ()
 ;;               (toggle-truncate-lines t)))
-
-;;   (load-file "~/.emacs.d/.private.el")
-
 ;;   (setq sql-connection-alist
 ;;         '((pool-server
 ;;            (sql-server sql-server-address)
@@ -293,19 +292,20 @@
               )))
 
 
+
 (use-package helm-dired-recent-dirs)
 (use-package helm-chrome)
 (use-package helm-swoop)
 (use-package helm-descbinds)
 
-(use-package helm-github-stars
-  :init
-  (setq helm-github-stars-username "chillaranand"))
+;; (use-package helm-github-stars
+;;   :config
+;;   (setq helm-github-stars-username "chillaranand"))
+
 
 (use-package helm
-  :init
-  (bind-key "C-x r l" 'helm-bookmarks)
-
+  :config
+  
   (defvar helm-source-emacs-commands
     (helm-build-sync-source "Emacs commands"
       :candidates (lambda ()
@@ -337,7 +337,9 @@
                                     hgs/helm-c-source-stars
                                     hgs/helm-c-source-repos
                                     helm-source-buffer-not-found
-                                    hgs/helm-c-source-search)))
+                                    hgs/helm-c-source-search))
+  
+  (bind-key "C-x r l" 'helm-bookmarks))
 
 (use-package phi-search
   :init
@@ -447,6 +449,10 @@
   (global-set-key (kbd "<f7>") 'bm-next)
   (global-set-key (kbd "<f6>") 'bm-previous))
 
+
+(use-package ws-butler
+  :config
+  (ws-butler-global-mode))
 
 (provide 'packages)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
