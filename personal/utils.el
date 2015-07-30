@@ -54,6 +54,7 @@ Repeated invocations toggle between the two most recently open buffers."
 
 
 (defun launch-separate-emacs-under-x ()
+  (interactive)
   (call-process "sh" nil nil nil "-c" "emacs &"))
 
 (defun restart-emacs ()

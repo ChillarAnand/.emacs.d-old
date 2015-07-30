@@ -1,12 +1,4 @@
 ;;; packages.el --- 3rd party packages.
-;;
-;; Filename: packages.el
-;; Description:
-;; Author: Anand
-;;; Commentary:
-;;
-;;; Code:
-
 
 (require 'use-package)
 (setq use-package-always-ensure t)
@@ -46,7 +38,7 @@
   
   (bind-key "C-<left>" nil)
   (bind-key "C-<right>" nil)
-  (bind-key "C-c C-c" 'my/send-region-or-buffer)))
+  (bind-key "C-c C-c" 'my/send-region-or-buffer))
 
 
 (load-file "~/projects/lisp/real-auto-save/real-auto-save.el")
@@ -130,67 +122,67 @@
 
 
 (require 'sql)
+(require 'mysql)
+(use-package sqlup-mode)
+(progn
+  (add-hook 'sql-mode-hook 'sqlup-mode)
+  (add-hook 'sql-interactive-mode-hook
+            (lambda ()
+              (toggle-truncate-lines t)))
 
-;; (use-package mysql
-;;   :init
-;;   (require 'sql)
-;;   (add-hook 'sql-mode-hook 'sqlup-mode)
-;;   (sql-set-product "mysql")
-;;   (add-hook 'sql-interactive-mode-hook
-;;             (lambda ()
-;;               (toggle-truncate-lines t)))
-;;   (setq sql-connection-alist
-;;         '((pool-server
-;;            (sql-server sql-server-address)
-;;            (sql-user sql-server-user)
-;;            (sql-password sql-server-password)
-;;            (sql-database sql-server-database)
-;;            (sql-port sql-server-port))
+  (sql-set-product "mysql")
+  (setq sql-connection-alist
+        '((pool-server
+           (sql-server sql-server-address)
+           (sql-user sql-server-user)
+           (sql-password sql-server-password)
+           (sql-database sql-server-database)
+           (sql-port sql-server-port))
 
-;;           (pool-local
-;;            (sql-server sql-local-server)
-;;            (sql-user sql-local-user)
-;;            (sql-password sql-local-password)
-;;            (sql-database sql-local-database)
-;;            (sql-port sql-local-port))))
+          (pool-local
+           (sql-server sql-local-server)
+           (sql-user sql-local-user)
+           (sql-password sql-local-password)
+           (sql-database sql-local-database)
+           (sql-port sql-local-port))))
 
-;;   (defun sql-connect-preset (name)
-;;     "Connect to a predefined SQL connection listed in `sql-connection-alist'"
-;;     (eval `(let ,(cdr (assoc name sql-connection-alist))
-;;              (flet ((sql-get-login (&rest what)))
-;;                (sql-product-interactive sql-product)))))
+  (defun sql-connect-preset (name)
+    "Connect to a predefined SQL connection listed in `sql-connection-alist'"
+    (eval `(let ,(cdr (assoc name sql-connection-alist))
+             (flet ((sql-get-login (&rest what)))
+               (sql-product-interactive sql-product)))))
 
-;;   (defun sql-pool-server ()
-;;     (interactive)
-;;     (sql-connect-preset 'pool-server))
+  (defun sql-pool-server ()
+    (interactive)
+    (sql-connect-preset 'pool-server))
 
-;;   (defun sql-pool-local ()
-;;     (interactive)
-;;     (sql-connect-preset 'pool-local))
+  (defun sql-pool-local ()
+    (interactive)
+    (sql-connect-preset 'pool-local))
 
-;;   (define-key sql-mode-map (kbd "C-c C-c") 'mysql-send-paragraph)
-;;   (defun mysql-send-paragraph ()
-;;     (interactive)
-;;     (sql-send-paragraph)
-;;     (with-current-buffer (process-buffer (get-process "SQL"))
-;;       (set-window-point (get-buffer-window (current-buffer))
-;;                         (point-max)))))
+  (defun mysql-send-paragraph ()
+    (interactive)
+    (sql-send-paragraph)
+    (with-current-buffer (process-buffer (get-process "SQL"))
+      (set-window-point (get-buffer-window (current-buffer))
+                        (point-max))))
+
+  (define-key sql-mode-map (kbd "C-c C-c") 'mysql-send-paragraph))
 
 
 (use-package multi-term
-  :init
-  (progn
-    (setq multi-term-program "/bin/zsh")
-    (bind-key "C-c C-t" 'multi-term)
-    (bind-key "C-c C-n" 'multi-term-next)
-    (bind-key "C-c C-p" 'multi-term-prev)))
+  :config
+  (setq multi-term-program "/bin/zsh")
+  (bind-key "C-c C-t" 'multi-term)
+  (bind-key "C-c C-n" 'multi-term-next)
+  (bind-key "C-c C-p" 'multi-term-prev))
 
 
 (use-package free-keys)
 
 
 (use-package electric-case
-  :init
+  :config
   (defun electric-case-python-init ()
 
     (electric-case-mode 1)
@@ -221,7 +213,7 @@
 
 
 (use-package smart-mode-line
-  :init
+  :config
   (sml/setup)
   (sml/apply-theme 'light)
   (rich-minority-mode 1))
@@ -241,8 +233,10 @@
 
 
 ;; (use-package wakatime-mode
-;;   :init
+;;   :config
+;;   (setq wakatime-python-bin "/usr/local/bin/wakatime")
 ;;   (global-wakatime-mode))
+
 
 (use-package impatient-mode)
 
@@ -298,9 +292,9 @@
 (use-package helm-swoop)
 (use-package helm-descbinds)
 
-;; (use-package helm-github-stars
-;;   :config
-;;   (setq helm-github-stars-username "chillaranand"))
+(use-package helm-github-stars
+  :config
+  (setq helm-github-stars-username "chillaranand"))
 
 
 (use-package helm
@@ -338,7 +332,7 @@
                                     hgs/helm-c-source-repos
                                     helm-source-buffer-not-found
                                     hgs/helm-c-source-search))
-  
+  (setq helm-M-x-always-save-history t)
   (bind-key "C-x r l" 'helm-bookmarks))
 
 (use-package phi-search
@@ -347,12 +341,12 @@
 
 
 (use-package aggressive-indent
-  :init
+  :config
   (global-aggressive-indent-mode 1))
 
 
 (use-package google-translate
-  :init
+  :config
   (setq  google-translate-default-source-language "en")
   (setq  google-translate-default-target-language "kn")
   (require 'google-translate-default-ui))
@@ -367,7 +361,7 @@
 
 
 (use-package ace-link
-  :init
+  :config
   (ace-link-setup-default))
 
 
@@ -394,9 +388,11 @@
 ;; (use-package zencoding-mode)
 ;; (add-hook 'html-mode-hook 'zencoding-mode)
 
+
 (use-package benchmark-init
-  :init
+  :config
   (benchmark-init/activate))
+
 
 ;; (use-package elisp-slime-nav
 ;;   :init
@@ -407,7 +403,7 @@
 
 
 (use-package auto-capitalize
-  :init
+  :config
   (autoload 'auto-capitalize-mode "auto-capitalize"
     "Toggle `auto-capitalize' minor mode in this buffer." t)
   (autoload 'turn-on-auto-capitalize-mode "auto-capitalize"
@@ -419,40 +415,62 @@
 
 
 (use-package keyfreq
-  :init
+  :config
   (keyfreq-mode 1)
   (keyfreq-autosave-mode 1))
 
 
 (use-package key-chord
-  :init
+  :config
   (setq key-chord-one-keys-delay 0.5)
   (setq key-chord-two-keys-delay 0.5))
 
 
 (use-package which-key
-  :init
+  :config
   (which-key-mode)
   (which-key-setup-side-window-right))
 
 
 (use-package expand-region
-  :ensure t
   :config
   (global-set-key (kbd "C-=") 'er/expand-region))
 
 
 (use-package bm
-  :ensure t
   :config
   (global-set-key (kbd "<f5>") 'bm-toggle)
   (global-set-key (kbd "<f7>") 'bm-next)
   (global-set-key (kbd "<f6>") 'bm-previous))
 
 
-(use-package ws-butler
+;; (use-package ws-butler
+;;   :config
+;;   (ws-butler-global-mode))
+
+
+(require 'dired)
+(define-key dired-mode-map "u" 'dired-up-directory)
+;; unzip zipped file dired
+(eval-after-load "dired-aux"
+  '(add-to-list 'dired-compress-file-suffixes
+                '("\\.zip\\'" ".zip" "unzip")))
+
+(use-package dired+
   :config
-  (ws-butler-global-mode))
+  (defun dir ()
+    (interactive)
+    (dired-sort-other "ll"))
+  ;; (add-hook 'dired-mode-hook 'dir)
+  )
+
+
+(use-package flycheck-pos-tip
+  :config
+  (eval-after-load 'flycheck
+    '(custom-set-variables
+      '(flycheck-display-errors-function #'flycheck-pos-tip-error-messages))))
+
 
 (provide 'packages)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

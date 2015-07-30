@@ -1,11 +1,4 @@
-;;; config.el --- personal config
-;;
-;; Filename: config.el
-;; Description:
-;; Author: Anand
-
-;;; Commentary:
-
+;;; test.el ---
 ;;; Code:
 
 (flymake-mode-on)
@@ -16,10 +9,7 @@
 ;; disable whitespace mode
 (setq prelude-whitespace nil)
 
-;; unzip zipped file dired
-(eval-after-load "dired-aux"
-  '(add-to-list 'dired-compress-file-suffixes
-                '("\\.zip\\'" ".zip" "unzip")))
+
 
 (add-hook 'python-mode-hook (turn-on-smartparens-strict-mode))
 
