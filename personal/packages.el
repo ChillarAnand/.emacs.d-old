@@ -27,6 +27,7 @@
   (setq python-indent-offset 4)
   (setq elpy-test-runner 'elpy-test-pytest-runner)
   (setq elpy-rpc-timeout nil)
+  (setq elpy-rpc-python-command "python3")
   (append grep-find-ignored-files "flycheck_*")
   
   (defun my/send-region-or-buffer (&optional arg)
@@ -36,9 +37,9 @@
       (set-window-point (get-buffer-window (current-buffer))
                         (point-max))))
   
-  (bind-key "C-<left>" nil)
-  (bind-key "C-<right>" nil)
-  (bind-key "C-c C-c" 'my/send-region-or-buffer))
+  (define-key elpy-mode-map (kbd "C-<right>") 'my/send-region-or-buffer)
+  (define-key elpy-mode-map (kbd "C-<left>") 'my/send-region-or-buffer)
+  (define-key elpy-mode-map (kbd "C-c C-c") 'my/send-region-or-buffer))
 
 
 (load-file "~/projects/lisp/real-auto-save/real-auto-save.el")
@@ -471,6 +472,17 @@
     '(custom-set-variables
       '(flycheck-display-errors-function #'flycheck-pos-tip-error-messages))))
 
+
+;; (load-file "~/.emacs.d/vendor/sql-completion.el")
+;; (require 'sql-completion)
+;; (setq sql-interactive-mode-hook
+;;       (lambda ()
+;;         (define-key sql-interactive-mode-map "\t" 'comint-dynamic-complete)
+;;         (sql-mysql-completion-init)))
+
+(use-package lispy
+  :config
+  (add-hook 'emacs-lisp-mode-hook (lambda () (lispy-mode 1))))
 
 (provide 'packages)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

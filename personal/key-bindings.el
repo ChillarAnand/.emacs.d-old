@@ -21,6 +21,7 @@
  ("C-c C-v" .  eval-buffer)
  ("C-x C-b" .  switch-to-previous-buffer)
  ("C-x C-d" .  current-dired)
+ ("C-x C-k" . kill-this-buffer)
  ("C-x C-m" .  smex)
  
  ("M-h" .  backward-kill-word)
