@@ -27,7 +27,7 @@
   (setq python-indent-offset 4)
   (setq elpy-test-runner 'elpy-test-pytest-runner)
   (setq elpy-rpc-timeout nil)
-  (setq elpy-rpc-python-command "python3")
+  ;; (setq elpy-rpc-python-command "python3")
   (append grep-find-ignored-files "flycheck_*")
   
   (defun my/send-region-or-buffer (&optional arg)

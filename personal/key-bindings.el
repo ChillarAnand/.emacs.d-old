@@ -3,11 +3,11 @@
 
 ;;; Code:
 
-;; unbind-keys
+(require 'utils)
+(require 'key-chord)
 
 
 (bind-keys*
-
  ("<f12>" . menu-bar-mode)
  
  ("C-+" .  text-scale-increase)
@@ -36,6 +36,10 @@
 (unless (eq system-type 'darwin)
   (global-set-key (kbd "C-x p") 'proced))
 
+(define-key emacs-lisp-mode-map (kbd "C-M-;")
+  #'comment-or-uncomment-sexp)
+
+
 (define-key 'help-command (kbd "A") 'apropos)
 (define-key 'help-command (kbd "C-f") 'find-function)
 (define-key 'help-command (kbd "C-i") 'info-display-manual)
@@ -61,23 +65,13 @@
                  isearch-string
                (regexp-quote isearch-string))))))
 
-;; use hippie-expand instead of dabbrev
-
-;; replace buffer-menu with ibuffer
-
-
 (unless (fboundp 'toggle-frame-fullscreen)
   (global-set-key (kbd "<f11>") 'prelude-fullscreen))
-
-;; toggle menu-bar visibility
-
 
 ;;(global-set-key (kbd "C-h") 'paredit-backward-delete)
 ;;(global-set-key (kbd "C-h") 'delete-backward-char)
 
 
-;;; key chord
-(require 'key-chord)
 (key-chord-mode +1)
 
 (key-chord-define-global "dd" 'delete-whole-line)
