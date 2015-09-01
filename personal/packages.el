@@ -11,15 +11,14 @@
 
 (use-package smartparens
   :config
-  (require 'smartparens-config)
-  (smartparens-global-mode 1)
   (sp-pair "`" "`" :wrap "C-`")
   (defun strict-smartparens ()
     (turn-on-smartparens-strict-mode))
-  (add-hook 'prog-mode-hook 'strict-smartparens))
+  (add-hook 'prog-mode-hook 'strict-smartparens)
+  (add-hook 'prelude-prog-mode-hook (lambda () (smartparens-mode -1)) t))
 
 
-(add-to-list 'load-path "~/projects/lisp/elpy")
+(add-to-list 'load-path "~/anand/projects/lisp/elpy")
 (load "elpy" nil t)
 (elpy-enable)
 (use-package elpy
@@ -37,12 +36,12 @@
       (set-window-point (get-buffer-window (current-buffer))
                         (point-max))))
   
-  (define-key elpy-mode-map (kbd "C-<right>") 'my/send-region-or-buffer)
-  (define-key elpy-mode-map (kbd "C-<left>") 'my/send-region-or-buffer)
+  (define-key elpy-mode-map (kbd "C-<right>") nil)
+  (define-key elpy-mode-map (kbd "C-<left>") nil)
   (define-key elpy-mode-map (kbd "C-c C-c") 'my/send-region-or-buffer))
 
 
-(load-file "~/projects/lisp/real-auto-save/real-auto-save.el")
+(load-file "~/anand/projects/lisp/real-auto-save/real-auto-save.el")
 (add-hook 'prog-mode-hook 'real-auto-save-mode)
 (setq real-auto-save-interval 4)
 

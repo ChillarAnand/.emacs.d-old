@@ -3,18 +3,18 @@
 
 ;;; Code:
 
-(require 'utils)
+;;(require 'utils)
 (require 'key-chord)
 
 
 (bind-keys*
  ("<f12>" . menu-bar-mode)
- 
+
  ("C-+" .  text-scale-increase)
  ("C--" .  text-scale-decrease)
  ("C-," .  avy-goto-char)
  ("C-^" .  top-join-line)
- 
+
  ("C-c C-f" .  helm-projectile-find-file)
  ("C-c C-g" .  beginning-of-buffer)
  ("C-c C-k" .  delete-other-windows)
@@ -23,7 +23,7 @@
  ("C-x C-d" .  current-dired)
  ("C-x C-k" . kill-this-buffer)
  ("C-x C-m" .  smex)
- 
+
  ("M-h" .  backward-kill-word)
  ("M-o" . other-window)
  ("M-z" . zop-up-to-char)
