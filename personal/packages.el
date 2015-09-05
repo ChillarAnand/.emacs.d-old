@@ -1,5 +1,6 @@
 ;;; packages.el --- 3rd party packages.
 
+(prelude-require-package 'use-package)
 (require 'use-package)
 (setq use-package-always-ensure t)
 (load-file "~/.emacs.d/.private.el")
@@ -14,12 +15,14 @@
   (require 'smartparens-config)
   (smartparens-global-mode 1)
   (sp-pair "`" "`" :wrap "C-`")
+  (sp-pair "%" "%" :wrap "C-%")
+  (sp-pair "<" ">" :wrap "C->")
   (defun strict-smartparens ()
     (turn-on-smartparens-strict-mode))
   (add-hook 'prog-mode-hook 'strict-smartparens))
 
 
-(add-to-list 'load-path "~/projects/lisp/elpy")
+(add-to-list 'load-path "~/projects/lisp/elpy") 
 (load "elpy" nil t)
 (elpy-enable)
 (use-package elpy
@@ -29,20 +32,20 @@
   (setq elpy-rpc-timeout nil)
   ;; (setq elpy-rpc-python-command "python3")
   (append grep-find-ignored-files "flycheck_*")
-  
+
   (defun my/send-region-or-buffer (&optional arg)
     (interactive "P")
     (elpy-shell-send-region-or-buffer arg)
     (with-current-buffer (process-buffer (elpy-shell-get-or-create-process))
       (set-window-point (get-buffer-window (current-buffer))
                         (point-max))))
-  
-  (define-key elpy-mode-map (kbd "C-<right>") 'my/send-region-or-buffer)
-  (define-key elpy-mode-map (kbd "C-<left>") 'my/send-region-or-buffer)
+  (define-key elpy-mode-map (kbd "C-<right>") 'elpy-nav-forward-indent)
+  (define-key elpy-mode-map (kbd "C-<left>") 'elpy-nav-backward-indent)
   (define-key elpy-mode-map (kbd "C-c C-c") 'my/send-region-or-buffer))
 
 
-(load-file "~/projects/lisp/real-auto-save/real-auto-save.el")
+(load-file "~/.emacs.d/vendor/real-auto-save/real-auto-save.el")
+(require 'real-auto-save)
 (add-hook 'prog-mode-hook 'real-auto-save-mode)
 (setq real-auto-save-interval 4)
 
@@ -87,7 +90,7 @@
   (setq web-mode-enable-auto-pairing t)
   (setq web-mode-enable-auto-expanding t)
   (setq web-mode-enable-css-colorization t)
-
+  (setq web-mode-enable-auto-pairing nil)
   (set (make-local-variable 'company-backends) '(company-css))
 
   (define-key prelude-mode-map (kbd "C-c C-i") nil)
@@ -451,6 +454,19 @@
 
 
 (require 'dired)
+(setq delete-by-moving-to-trash t)
+(setq dired-no-confirm t)
+(define-key dired-mode-map "u" 'dired-up-directory)
+(defun delete-current-item ()
+  (interactive)
+  (dired-flag-file-deletion 1)
+  (dired-do-flagged-delete))
+(define-key dired-mode-map  [delete] 'delete-current-item)
+(setq dired-deletion-confirmer '(lambda (x) t))
+
+(defadvice dired-delete-entry (before force-clean-up-buffers (file) activate)
+  (kill-buffer (get-file-buffer file)))
+
 (define-key dired-mode-map "u" 'dired-up-directory)
 ;; unzip zipped file dired
 (eval-after-load "dired-aux"
@@ -483,6 +499,14 @@
 (use-package lispy
   :config
   (add-hook 'emacs-lisp-mode-hook (lambda () (lispy-mode 1))))
+
+
+;; (use-package soundcloud
+;;   :config
+;;   (require 'emms-setup)
+;;   (emms-standard)
+;;   (emms-default-players))
+
 
 (provide 'packages)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

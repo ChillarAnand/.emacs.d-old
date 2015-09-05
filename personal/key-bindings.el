@@ -3,34 +3,33 @@
 
 ;;; Code:
 
-(require 'utils)
-(require 'key-chord)
-
+(require 'use-package)
 
 (bind-keys*
  ("<f12>" . menu-bar-mode)
- 
+
  ("C-+" .  text-scale-increase)
  ("C--" .  text-scale-decrease)
  ("C-," .  avy-goto-char)
  ("C-^" .  top-join-line)
- 
+
  ("C-c C-f" .  helm-projectile-find-file)
  ("C-c C-g" .  beginning-of-buffer)
  ("C-c C-k" .  delete-other-windows)
  ("C-c C-v" .  eval-buffer)
+ ("C-x C-a" .  beginning-of-buffer)
  ("C-x C-b" .  switch-to-previous-buffer)
- ("C-x C-d" .  current-dired)
+ ("C-x C-d" .  duplicate-current-line-or-region)
  ("C-x C-k" . kill-this-buffer)
  ("C-x C-m" .  smex)
- 
+ ("C-x C-z" .  end-of-buffer)
+
  ("M-h" .  backward-kill-word)
  ("M-o" . other-window)
  ("M-z" . zop-up-to-char)
  ("M-Z" . zop-to-char)
  ("M-?" .  mark-paragraph)
  ("M-/" . hippie-expand))
-
 
 ;; Start proced in a similar manner to dired
 (unless (eq system-type 'darwin)
@@ -71,8 +70,9 @@
 ;;(global-set-key (kbd "C-h") 'paredit-backward-delete)
 ;;(global-set-key (kbd "C-h") 'delete-backward-char)
 
-
+(require 'key-chord)
 (key-chord-mode +1)
+
 
 (key-chord-define-global "dd" 'delete-whole-line)
 (key-chord-define-global "df" 'describe-function)
