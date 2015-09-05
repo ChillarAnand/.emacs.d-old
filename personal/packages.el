@@ -12,14 +12,13 @@
 
 (use-package smartparens
   :config
-  (require 'smartparens-config)
-  (smartparens-global-mode 1)
   (sp-pair "`" "`" :wrap "C-`")
   (sp-pair "%" "%" :wrap "C-%")
   (sp-pair "<" ">" :wrap "C->")
   (defun strict-smartparens ()
     (turn-on-smartparens-strict-mode))
-  (add-hook 'prog-mode-hook 'strict-smartparens))
+  (add-hook 'prog-mode-hook 'strict-smartparens)
+  (add-hook 'prelude-prog-mode-hook (lambda () (smartparens-mode -1)) t))
 
 
 (add-to-list 'load-path "~/projects/lisp/elpy") 
@@ -44,11 +43,9 @@
   (define-key elpy-mode-map (kbd "C-c C-c") 'my/send-region-or-buffer))
 
 
-(load-file "~/.emacs.d/vendor/real-auto-save/real-auto-save.el")
-(require 'real-auto-save)
+(load-file "~/projects/lisp/real-auto-save/real-auto-save.el")
 (add-hook 'prog-mode-hook 'real-auto-save-mode)
 (setq real-auto-save-interval 4)
-
 
 (use-package multiple-cursors
   :init

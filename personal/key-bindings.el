@@ -1,9 +1,9 @@
 ;;; key-bindings.el --- key bindings
 ;;-*- lexical-binding: t; -*-
-
 ;;; Code:
 
 (require 'use-package)
+(require 'key-chord)
 
 (bind-keys*
  ("<f12>" . menu-bar-mode)
@@ -23,7 +23,7 @@
  ("C-x C-k" . kill-this-buffer)
  ("C-x C-m" .  smex)
  ("C-x C-z" .  end-of-buffer)
-
+ 
  ("M-h" .  backward-kill-word)
  ("M-o" . other-window)
  ("M-z" . zop-up-to-char)
