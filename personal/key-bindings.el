@@ -2,8 +2,6 @@
 ;;-*- lexical-binding: t; -*-
 ;;; Code:
 
-(require 'use-package)
-(require 'key-chord)
 
 (bind-keys*
  ("<f12>" . menu-bar-mode)

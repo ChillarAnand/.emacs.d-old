@@ -1,6 +1,29 @@
 ;;; test.el ---
 ;;; Code:
 
+;; (require 'a)
+
+(defun foo ()
+  (interactive)
+  (message "foo"))
+
+(defun hyperlink-error-location ()
+  (interactive)
+  (message "hyerlink debug")
+  (when (search-forward-regexp "Reading at buffer position " nil 'noerror)
+    (goto-char (match-end 0))))
+(add-hook 'debugger-mode-hook 'hyperlink-error-location)
+(add-hook 'debugger-mode-hook 'foo)
+(add-hook 'edebug-mode-hook 'foo)
+(add-hook 'edebug-setup-hook 'foo)
+
+;; (add-text-properties)
+
+;; (add-text-properties
+;;  1
+;;  50
+;;  '(lambda (x) (find-file "~/test.py")))
+
 (flymake-mode-on)
 (defadvice flymake-post-syntax-check (before flymake-force-check-was-interrupted)
   (setq flymake-check-was-interrupted t))

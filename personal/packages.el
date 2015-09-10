@@ -1,5 +1,6 @@
 ;;; packages.el --- 3rd party packages.
 
+(setq package-check-signature nil)
 (prelude-require-package 'use-package)
 (require 'use-package)
 (setq use-package-always-ensure t)
@@ -21,6 +22,7 @@
   (add-hook 'prelude-prog-mode-hook (lambda () (smartparens-mode -1)) t))
 
 
+(use-package elpy)
 (add-to-list 'load-path "~/projects/lisp/elpy") 
 (load "elpy" nil t)
 (elpy-enable)
@@ -43,9 +45,10 @@
   (define-key elpy-mode-map (kbd "C-c C-c") 'my/send-region-or-buffer))
 
 
-(load-file "~/projects/lisp/real-auto-save/real-auto-save.el")
-(add-hook 'prog-mode-hook 'real-auto-save-mode)
-(setq real-auto-save-interval 4)
+(use-package real-auto-save)
+;; (load-file "~/projects/lisp/real-auto-save/real-auto-save.el")
+;; (add-hook 'prog-mode-hook 'real-auto-save-mode)
+;; (setq real-auto-save-interval 4)
 
 (use-package multiple-cursors
   :init
